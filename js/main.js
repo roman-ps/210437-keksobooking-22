@@ -2,11 +2,11 @@
 
 let getRandomInteger = function(min, max) {
   if (isNaN(min) || isNaN(max)) throw new Error('Аргумент не является числом!');
-  return Math.round(Number(Math.min(min, max)) + Math.random() * Math.abs(min - max));
+  return Math.round(Math.min(min, max) + Math.random() * Math.abs(min - max));
 }
-let getRandomFloat = function(min, max, signs) {
+let getRandomFloat = function(min, max, digits) {
   if (isNaN(min) || isNaN(max)) throw new Error('Аргумент не является числом!');
-  return (Number(Math.min(min, max)) + Math.random() * Math.abs(min - max)).toFixed(signs);
+  return (Math.min(min, max) + Math.random() * Math.abs(min - max)).toFixed(digits);
 }
 
 getRandomInteger(1, 7);
