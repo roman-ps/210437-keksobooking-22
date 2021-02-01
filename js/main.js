@@ -5,7 +5,7 @@ let getRandomInteger = function(min, max) {
   return Math.round(Math.min(min, max) + Math.random() * Math.abs(min - max));
 }
 let getRandomFloat = function(min, max, digits) {
-  if (isNaN(min) || isNaN(max)) throw new Error('Аргумент не является числом!');
+  if (isNaN(min) || isNaN(max) || isNaN(digits)) throw new Error('Аргумент не является числом!');
   return (Math.min(min, max) + Math.random() * Math.abs(min - max)).toFixed(digits);
 }
 
