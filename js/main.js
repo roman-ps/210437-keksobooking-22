@@ -3,11 +3,12 @@
 let getRandomInteger = function(min, max) {
   if (isNaN(min) || isNaN(max)) throw new Error('Аргумент не является числом!');
   return Math.round(Math.min(min, max) + Math.random() * Math.abs(min - max));
-}
+};
+
 let getRandomFloat = function(min, max, digits = 0) {
   if (isNaN(min) || isNaN(max) || isNaN(digits)) throw new Error('Аргумент не является числом!');
   return (Math.min(min, max) + Math.random() * Math.abs(min - max)).toFixed(digits);
-}
+};
 
 const AVATARS = [
   'img/avatars/user01.png',
@@ -29,7 +30,7 @@ const TITLES = [
   'Просторная квартира с окнами на церковь',
   'Роскошные апартаменты с большими окнами',
   'Бунгало на диком пляже',
-]
+];
 
 const DESCRIPTIONS = [
   'Отличное жилье в центре города',
@@ -38,20 +39,20 @@ const DESCRIPTIONS = [
   'Рукой подать до пляжа',
   'Вокруг прекрасный сад',
   'Из окна видны высокие горы',
-]
+];
 
 const TYPES = [
   'palace',
   'flat',
   'house',
   'bungalow',
-]
+];
 
 const CHECKINS = [
   '12:00',
   '13:00',
   '14:00',
-]
+];
 
 const FEATURES = [
   'wifi',
@@ -60,17 +61,27 @@ const FEATURES = [
   'washer',
   'elevator',
   'conditioner',
-]
+];
 
 const PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg',
-]
+];
 
 const OFFERS_COUNT = 10;
-
-const newAds = new Array(OFFERS_COUNT);
+const MIN_PRICE = 1000;
+const MAX_PRICE = 30000;
+const DIGITS_COUNT = 2;
+const MIN_ROOM_COUNT = 1;
+const MAX_ROOM_COUNT = 4;
+const MIN_GUEST_COUNT = 0;
+const MAX_GUEST_COUNT = 5;
+const MIN_LOCATION_X = 35.65;
+const MAX_LOCATION_X = 35.70;
+const MIN_LOCATION_Y = 139.70;
+const MAX_LOCATION_Y = 139.80;
+// const newAds = new Array(OFFERS_COUNT);
 
 const getRandomArrayElement = function(array) {
   return array[getRandomInteger(0, array.length - 1)];
@@ -79,20 +90,22 @@ const getRandomArrayElement = function(array) {
 const getRandomArrayList = function(array) {
   let newArray = Array.from(array);
   return newArray.splice(getRandomInteger(0, newArray.length-1), getRandomInteger(0, newArray.length-1))
-}
+};
 
 const createAd = function() {
+  const coordY = getRandomFloat(MIN_LOCATION_Y, MAX_LOCATION_Y, DIGITS_COUNT);
+  const coordX = getRandomFloat(MIN_LOCATION_X, MAX_LOCATION_X, DIGITS_COUNT);
   return {
     author: {
       avatar: getRandomArrayElement(AVATARS),
     },
     offer: {
       titles: getRandomArrayElement(TITLES),
-      address: {x: getRandomFloat(35.65, 35.70, 2), y: getRandomFloat(139.70, 139.80, 2)},
-      price: getRandomInteger(0, 30000),
+      address: {x: coordX, y: coordY},
+      price: getRandomInteger(MIN_PRICE, MAX_PRICE),
       type: getRandomArrayElement(TYPES),
-      rooms: getRandomInteger(1, 4),
-      guests: getRandomInteger(0, 3),
+      rooms: getRandomInteger(MIN_ROOM_COUNT, MAX_ROOM_COUNT),
+      guests: getRandomInteger(MIN_GUEST_COUNT, MAX_GUEST_COUNT),
       checkin: getRandomArrayElement(CHECKINS),
       checkout: getRandomArrayElement(CHECKINS),
       features: getRandomArrayList(FEATURES),
@@ -100,12 +113,19 @@ const createAd = function() {
       photos: getRandomArrayElement(PHOTOS),
     },
     location: {
-      x: getRandomFloat(35.65, 35.70, 2),
-      y: getRandomFloat(139.70, 139.80, 2),
+      x: coordX,
+      y: coordY,
     },
   };
 };
 
-for (let i = 0; i < OFFERS_COUNT; i++) {
-  newAds[i] = createAd();
-}
+const setAds = function() {
+  const newAds = new Array(OFFERS_COUNT);
+  for (let i = 0; i < OFFERS_COUNT; i++) {
+    newAds[i] = createAd();
+  }
+  return newAds;
+};
+
+let renderAds = setAds();
+console.log(renderAds)
