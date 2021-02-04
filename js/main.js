@@ -81,7 +81,6 @@ const MIN_LOCATION_X = 35.65;
 const MAX_LOCATION_X = 35.70;
 const MIN_LOCATION_Y = 139.70;
 const MAX_LOCATION_Y = 139.80;
-// const newAds = new Array(OFFERS_COUNT);
 
 const getRandomArrayElement = function(array) {
   return array[getRandomInteger(0, array.length - 1)];
@@ -128,4 +127,6 @@ const setAds = function() {
 };
 
 let renderAds = setAds();
+/* eslint-disable no-console*/
 console.log(renderAds)
+/* eslint-enable no-console*/
