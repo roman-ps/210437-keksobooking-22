@@ -10,16 +10,17 @@ let getRandomFloat = function(min, max, digits = 0) {
   return (Math.min(min, max) + Math.random() * Math.abs(min - max)).toFixed(digits);
 };
 
-const AVATARS = [
-  'img/avatars/user01.png',
-  'img/avatars/user02.png',
-  'img/avatars/user03.png',
-  'img/avatars/user04.png',
-  'img/avatars/user05.png',
-  'img/avatars/user06.png',
-  'img/avatars/user07.png',
-  'img/avatars/user08.png',
-];
+const AVATARS_MAX_INDEX = 8;
+
+const fillAvatars = function() {
+  let newArray = [];
+  for (let i = 1; i <= AVATARS_MAX_INDEX; i++) {
+    newArray.push(`img/avatars/user0${i}.png`);
+  }
+  return newArray;
+};
+
+const AVATARS = fillAvatars();
 
 const TITLES = [
   'Уютная квартирка в центре города',
@@ -88,7 +89,11 @@ const getRandomArrayElement = function(array) {
 
 const getRandomArrayList = function(array) {
   let newArray = Array.from(array);
-  return newArray.splice(getRandomInteger(0, newArray.length-1), getRandomInteger(0, newArray.length-1))
+  return newArray.filter(function(elem) {
+    if (getRandomInteger(1, 100) > 50) {
+      return elem;
+    }
+  });
 };
 
 const createAd = function() {
@@ -109,7 +114,7 @@ const createAd = function() {
       checkout: getRandomArrayElement(CHECKINS),
       features: getRandomArrayList(FEATURES),
       description: getRandomArrayElement(DESCRIPTIONS),
-      photos: getRandomArrayElement(PHOTOS),
+      photos: getRandomArrayList(PHOTOS),
     },
     location: {
       x: coordX,
@@ -118,7 +123,7 @@ const createAd = function() {
   };
 };
 
-const setAds = function() {
+const fillAds = function() {
   const newAds = new Array(OFFERS_COUNT);
   for (let i = 0; i < OFFERS_COUNT; i++) {
     newAds[i] = createAd();
@@ -126,7 +131,7 @@ const setAds = function() {
   return newAds;
 };
 
-let renderAds = setAds();
+let ads = fillAds();
 /* eslint-disable no-console*/
-console.log(renderAds)
+console.log(ads)
 /* eslint-enable no-console*/
