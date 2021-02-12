@@ -1,16 +1,4 @@
-import {getRandomInteger, getRandomFloat, getRandomArrayElement, getRandomArrayList} from './utils.js';
-
-const AVATARS_MAX_INDEX = 8;
-
-const fillAvatars = function() {
-  let newArray = [];
-  for (let i = 1; i <= AVATARS_MAX_INDEX; i++) {
-    newArray.push(`img/avatars/user0${i}.png`);
-  }
-  return newArray;
-};
-
-const AVATARS = fillAvatars();
+import {getRandomNumber, getRandomArrayElement, getRandomArrayList} from './utils.js';
 
 const TITLES = [
   'Уютная квартирка в центре города',
@@ -60,22 +48,49 @@ const PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg',
 ];
 
+const Prices = {
+  MIN: 1000,
+  MAX: 30000,
+}
+
+const Rooms = {
+  MIN: 1,
+  MAX: 4,
+}
+
+const Guests = {
+  MIN: 0,
+  MAX: 5,
+}
+
+const Coords = {
+  MIN_X: 35.65,
+  MAX_X: 35.70,
+  MIN_Y: 139.70,
+  MAX_Y: 139.80,
+}
+
 const OFFERS_COUNT = 10;
-const MIN_PRICE = 1000;
-const MAX_PRICE = 30000;
 const DIGITS_COUNT = 2;
-const MIN_ROOM_COUNT = 1;
-const MAX_ROOM_COUNT = 4;
-const MIN_GUEST_COUNT = 0;
-const MAX_GUEST_COUNT = 5;
-const MIN_LOCATION_X = 35.65;
-const MAX_LOCATION_X = 35.70;
-const MIN_LOCATION_Y = 139.70;
-const MAX_LOCATION_Y = 139.80;
+const AVATARS_MAX_INDEX = 8;
+
+const fillAvatarImgUrl = function(number) {
+  return `img/avatars/user0${number}.png`;
+}
+
+const fillAvatars = function() {
+  let avatars = [];
+  for (let i = 1; i <= AVATARS_MAX_INDEX; i++) {
+    avatars.push(fillAvatarImgUrl(i));
+  }
+  return avatars;
+};
+
+const AVATARS = fillAvatars();
 
 const createAd = function() {
-  const coordY = getRandomFloat(MIN_LOCATION_Y, MAX_LOCATION_Y, DIGITS_COUNT);
-  const coordX = getRandomFloat(MIN_LOCATION_X, MAX_LOCATION_X, DIGITS_COUNT);
+  const coordY = getRandomNumber(Coords.MIN_Y, Coords.MAX_Y, DIGITS_COUNT);
+  const coordX = getRandomNumber(Coords.MIN_X, Coords.MAX_X, DIGITS_COUNT);
   return {
     author: {
       avatar: getRandomArrayElement(AVATARS),
@@ -83,10 +98,10 @@ const createAd = function() {
     offer: {
       titles: getRandomArrayElement(TITLES),
       address: {x: coordX, y: coordY},
-      price: getRandomInteger(MIN_PRICE, MAX_PRICE),
+      price: getRandomNumber(Prices.MIN, Prices.MAX),
       type: getRandomArrayElement(TYPES),
-      rooms: getRandomInteger(MIN_ROOM_COUNT, MAX_ROOM_COUNT),
-      guests: getRandomInteger(MIN_GUEST_COUNT, MAX_GUEST_COUNT),
+      rooms: getRandomNumber(Rooms.MIN, Rooms.MAX),
+      guests: getRandomNumber(Guests.MIN, Guests.MAX),
       checkin: getRandomArrayElement(CHECKINS),
       checkout: getRandomArrayElement(CHECKINS),
       features: getRandomArrayList(FEATURES),
@@ -108,7 +123,6 @@ const fillAds = function() {
   return newAds;
 };
 
-let ads = fillAds();
-/* eslint-disable no-console*/
-console.log(ads)
-/* eslint-enable no-console*/
+const ads = fillAds();
+
+export {ads};
