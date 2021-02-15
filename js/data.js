@@ -76,7 +76,6 @@ const AVATARS_MAX_INDEX = 8;
 
 const fillAvatarImgUrl = function(number) {
   const numberPrefix = `${number}`.padStart(2, '0');
-  console.log(numberPrefix);
   return `img/avatars/user${numberPrefix}.png`;
 }
 
