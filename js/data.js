@@ -75,7 +75,9 @@ const DIGITS_COUNT = 2;
 const AVATARS_MAX_INDEX = 8;
 
 const fillAvatarImgUrl = function(number) {
-  return `img/avatars/user0${number}.png`;
+  const numberPrefix = `${number}`.padStart(2, '0');
+  console.log(numberPrefix);
+  return `img/avatars/user${numberPrefix}.png`;
 }
 
 const fillAvatars = function() {

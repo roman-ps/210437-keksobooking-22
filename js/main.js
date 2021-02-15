@@ -1,4 +1,7 @@
-import { ads } from './data.js';
+import {ads} from './data.js';
+import {fillSimilarAds} from './similar-ads.js'
+
 /* eslint-disable no-console*/
-console.log(ads)
+
 /* eslint-enable no-console*/
+
