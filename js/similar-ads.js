@@ -6,7 +6,7 @@ import {ads} from './data.js';
 const TMPL = document.querySelector('#card');
 const POPUP = TMPL.content.querySelector('.popup');
 const MAP_CANVAS = document.querySelector('#map-canvas');
-const SIMILAR_FRAGMENT = document.createDocumentFragment();
+// const SIMILAR_FRAGMENT = document.createDocumentFragment();
 const NODES = {};
 
 const Selectors = {
@@ -30,7 +30,7 @@ const transferToNodes = function() {
   for (let i = 0; i < key.length; i++) {
     // console.log('Selectors[key[i]]: ', Selectors[key[i]])
     NODES[key[i]] = document.querySelector(Selectors[key[i]]);
-    console.log(NODES[key[i]]);
+    // console.log(NODES[key[i]]);
     // console.log(Selectors[key[i]]);
   }
 }
@@ -38,7 +38,7 @@ const transferToNodes = function() {
 
 // transferToNodes();
 document.addEventListener('DOMContentLoaded', transferToNodes);
-console.log(NODES)
+// console.log(NODES)
 
 const chooseType = function(type) {
   switch (type) {
@@ -65,8 +65,10 @@ const renderFeatures = function(parent, features) {
       if (childs[i].className.includes(features[j])) {
         childs[i].classList.remove('hidden');
       }
+
       /* console.log(...childs[i].className)
-      if (([...childs[i].className]).some((features[j]))) {
+      console.log(childs[i].className.split())
+      if ([...childs[i].className].some((features[j]))) {
         console.log('Урраааа')
       } */
     }
@@ -75,19 +77,18 @@ const renderFeatures = function(parent, features) {
 
 const renderPhotos = function(parent, photos) {
   const IMG = parent.querySelector('.popup__photo');
-  // console.log(IMG);
-  // console.log(photos);
-  if (photos.length < 1) {
-    IMG.classList.add('hidden');
-  }
+  IMG.classList.add('hidden');
   for (let i = 0; i < photos.length; i++) {
-    IMG.src = photos[i];
-    let x = IMG.cloneNode(true);
-    parent.appendChild(x);
+    let newImg = IMG.cloneNode(true);
+    newImg.src = photos[i];
+    newImg.classList.remove('hidden')
+    parent.appendChild(newImg);
   }
+  parent.removeChild(IMG);
 };
 
 const fillSimilarAds = function() {
+  const SIMILAR_FRAGMENT = document.createDocumentFragment();
   for (let i = 0; i < ads.length; i++) {
     const similarAd = POPUP.cloneNode(true);
     let title = similarAd.querySelector('.popup__title');
@@ -115,9 +116,9 @@ const fillSimilarAds = function() {
   return SIMILAR_FRAGMENT;
 };
 
-const renderSimilarAds = fillSimilarAds()
+const renderSimilarAds = fillSimilarAds();
 
-MAP_CANVAS.appendChild(renderSimilarAds)
+MAP_CANVAS.appendChild(renderSimilarAds.childNodes[0]);
 
 export {fillSimilarAds};
-console.log(ads)
+console.log(ads);

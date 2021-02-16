@@ -117,7 +117,7 @@ const createAd = function() {
 };
 
 const fillAds = function() {
-  const newAds = new Array(OFFERS_COUNT);
+  const newAds = [];
   for (let i = 0; i < OFFERS_COUNT; i++) {
     newAds[i] = createAd();
   }
