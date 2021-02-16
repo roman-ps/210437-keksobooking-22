@@ -7,6 +7,38 @@ const TMPL = document.querySelector('#card');
 const POPUP = TMPL.content.querySelector('.popup');
 const MAP_CANVAS = document.querySelector('#map-canvas');
 const SIMILAR_FRAGMENT = document.createDocumentFragment();
+const NODES = {};
+
+const Selectors = {
+  TITLE: '.popup__title',
+  ADDRESS: '.popup__text--address',
+  PRICE: '.popup__text--price',
+  TYPE: '.popup__type',
+  CAPACITY: '.popup__text--capacity',
+  TIME: '.popup__text--time',
+  FEATURES: '.popup__features',
+  DESCRIPTION: '.popup__description',
+  PHOTOS: '.popup__photos',
+  AVATAR: '.popup__avatar',
+};
+
+console.log(Selectors)
+
+const transferToNodes = function() {
+  let key = Object.keys(Selectors);
+  // console.log(key);
+  for (let i = 0; i < key.length; i++) {
+    // console.log('Selectors[key[i]]: ', Selectors[key[i]])
+    NODES[key[i]] = document.querySelector(Selectors[key[i]]);
+    console.log(NODES[key[i]]);
+    // console.log(Selectors[key[i]]);
+  }
+}
+
+
+// transferToNodes();
+document.addEventListener('DOMContentLoaded', transferToNodes);
+console.log(NODES)
 
 const chooseType = function(type) {
   switch (type) {
@@ -22,24 +54,38 @@ const chooseType = function(type) {
 };
 
 const renderFeatures = function(parent, features) {
-  let childrens = parent.querySelectorAll('.popup__feature');
-  childrens.forEach((elem) => elem.classList.add('hidden'));
-  for (let i = 0; i < childrens.length; i++) {
+  let childs = parent.querySelectorAll('.popup__feature');
+  childs.forEach((elem) => elem.classList.add('hidden'));
+  for (let i = 0; i < childs.length; i++) {
     for (let j = 0; j < features.length; j++) {
 
-      // console.log(`childrens[i]: ${childrens[i].className}`);
+      // console.log(`childs[i]: ${childs[i].className}`);
       // console.log(`features[j]: ${features[j]}`);
 
-      if (childrens[i].className.includes(features[j])) {
-        childrens[i].classList.remove('hidden');
+      if (childs[i].className.includes(features[j])) {
+        childs[i].classList.remove('hidden');
       }
-      /* console.log(...childrens[i].className)
-      if (([...childrens[i].className]).some((features[j]))) {
+      /* console.log(...childs[i].className)
+      if (([...childs[i].className]).some((features[j]))) {
         console.log('Урраааа')
       } */
     }
   }
-}
+};
+
+const renderPhotos = function(parent, photos) {
+  const IMG = parent.querySelector('.popup__photo');
+  // console.log(IMG);
+  // console.log(photos);
+  if (photos.length < 1) {
+    IMG.classList.add('hidden');
+  }
+  for (let i = 0; i < photos.length; i++) {
+    IMG.src = photos[i];
+    let x = IMG.cloneNode(true);
+    parent.appendChild(x);
+  }
+};
 
 const fillSimilarAds = function() {
   for (let i = 0; i < ads.length; i++) {
@@ -60,17 +106,18 @@ const fillSimilarAds = function() {
     type.textContent = chooseType(ads[i].offer.type);
     capacity.textContent = `${ads[i].offer.rooms} комнаты для ${ads[i].offer.guests} гостей`;
     time.textContent = `Заезд после ${ads[i].offer.checkin}, выезд до ${ads[i].offer.checkout}`;
-
-    renderFeatures(features, ads[i].offer.features)
+    renderPhotos(photos, ads[i].offer.photos)
+    renderFeatures(features, ads[i].offer.features);
     description.textContent = ads[i].offer.description;
     avatar.src = ads[i].author.avatar;
     SIMILAR_FRAGMENT.appendChild(similarAd);
   }
+  return SIMILAR_FRAGMENT;
 };
 
-fillSimilarAds()
+const renderSimilarAds = fillSimilarAds()
 
-MAP_CANVAS.appendChild(SIMILAR_FRAGMENT)
+MAP_CANVAS.appendChild(renderSimilarAds)
 
 export {fillSimilarAds};
 console.log(ads)
