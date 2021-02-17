@@ -6,7 +6,6 @@ import {ads} from './data.js';
 const TMPL = document.querySelector('#card');
 const POPUP = TMPL.content.querySelector('.popup');
 const MAP_CANVAS = document.querySelector('#map-canvas');
-// const SIMILAR_FRAGMENT = document.createDocumentFragment();
 const NODES = {};
 
 const Selectors = {
@@ -22,13 +21,9 @@ const Selectors = {
   AVATAR: '.popup__avatar',
 };
 
-console.log(Selectors)
-
 const transferToNodes = function() {
   let key = Object.keys(Selectors);
-  // console.log(key);
   for (let i = 0; i < key.length; i++) {
-    // console.log('Selectors[key[i]]: ', Selectors[key[i]])
     NODES[key[i]] = document.querySelector(Selectors[key[i]]);
     // console.log(NODES[key[i]]);
     // console.log(Selectors[key[i]]);
@@ -55,22 +50,19 @@ const chooseType = function(type) {
 
 const renderFeatures = function(parent, features) {
   let childs = parent.querySelectorAll('.popup__feature');
-  childs.forEach((elem) => elem.classList.add('hidden'));
+  // childs.forEach((elem) => elem.classList.add('hidden'));
   for (let i = 0; i < childs.length; i++) {
     for (let j = 0; j < features.length; j++) {
 
-      // console.log(`childs[i]: ${childs[i].className}`);
-      // console.log(`features[j]: ${features[j]}`);
-
-      if (childs[i].className.includes(features[j])) {
+      console.log('childs[i]: ', Array.from(childs[i].className));
+      console.log('childs[i]: ', Array.from(childs[i]));
+      /* if (childs[i].className.includes(features[j])) {
         childs[i].classList.remove('hidden');
-      }
-
-      /* console.log(...childs[i].className)
-      console.log(childs[i].className.split())
-      if ([...childs[i].className].some((features[j]))) {
-        console.log('Урраааа')
       } */
+      if ([...childs].some((elem) => elem.className.endsWith(features[j]))) {
+        // features[j].classList.add('hidden')
+        // попробовать indexOf
+      }
     }
   }
 };
@@ -120,5 +112,8 @@ const renderSimilarAds = fillSimilarAds();
 
 MAP_CANVAS.appendChild(renderSimilarAds.childNodes[0]);
 
-export {fillSimilarAds};
+export {renderSimilarAds};
+
+/* eslint-disable no-console*/
 console.log(ads);
+/* eslint-enable no-console*/
