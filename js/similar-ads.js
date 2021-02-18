@@ -1,4 +1,4 @@
-import {ads} from './data.js';
+import {ads, TYPES} from './data.js';
 
 const TMPL = document.querySelector('#card');
 const POPUP = TMPL.content.querySelector('.popup');
@@ -19,28 +19,22 @@ const Selectors = {
 
 const getNodes = function(selectors, parent) {
   let nodes = {}
-  const key2 = Object.entries(selectors);
-  for (let [key, value] of key2) {
+  const keys = Object.entries(selectors);
+
+  for (let [key, value] of keys) {
     nodes[key] = parent.querySelector(value);
   }
+
   return nodes;
 }
 
 const chooseType = function(type) {
-  switch (type) {
-    case 'flat':
-      return 'Квартира';
-    case 'bungalow':
-      return 'Бунгало';
-    case 'house':
-      return 'Дом';
-    case 'palace':
-      return 'Дворец';
-  }
+  return TYPES[type];
 };
 
 const renderFeatures = function(parent, features) {
   let childs = parent.querySelectorAll('.popup__feature');
+
   childs.forEach((elem) => elem.classList.add('hidden'));
   for (let i = 0; i < childs.length; i++) {
     for (let j = 0; j < features.length; j++) {
@@ -53,6 +47,7 @@ const renderFeatures = function(parent, features) {
 
 const renderPhotos = function(parent, photos) {
   const IMG = parent.querySelector('.popup__photo'); // ищем элемент img в родительском элементе popup__photos
+
   IMG.classList.add('hidden');                       // скрываем его
   for (let i = 0; i < photos.length; i++) {          // в цикле:
     let newImg = IMG.cloneNode(true);                // клонируем скрытый элемент
@@ -65,6 +60,7 @@ const renderPhotos = function(parent, photos) {
 
 const fillSimilarAds = function() {
   const SIMILAR_FRAGMENT = document.createDocumentFragment();
+
   for (let i = 0; i < ads.length; i++) {
     const similarAd = POPUP.cloneNode(true);
     const similarAdNodeS = getNodes(Selectors, similarAd);
@@ -90,6 +86,7 @@ const fillSimilarAds = function() {
     avatar.src = ads[i].author.avatar;
     SIMILAR_FRAGMENT.appendChild(similarAd);
   }
+
   return SIMILAR_FRAGMENT;
 };
 

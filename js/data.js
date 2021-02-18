@@ -20,12 +20,12 @@ const DESCRIPTIONS = [
   'Из окна видны высокие горы',
 ];
 
-const TYPES = [
-  'palace',
-  'flat',
-  'house',
-  'bungalow',
-];
+const TYPES = {
+  palace: 'Дворец',
+  flat: 'Квартира',
+  house: 'Дом',
+  bungalow: 'Бунгало',
+};
 
 const CHECKINS = [
   '12:00',
@@ -76,14 +76,17 @@ const AVATARS_MAX_INDEX = 8;
 
 const fillAvatarImgUrl = function(number) {
   const numberPrefix = `${number}`.padStart(2, '0');
+
   return `img/avatars/user${numberPrefix}.png`;
 }
 
 const fillAvatars = function() {
   let avatars = [];
+
   for (let i = 1; i <= AVATARS_MAX_INDEX; i++) {
     avatars.push(fillAvatarImgUrl(i));
   }
+
   return avatars;
 };
 
@@ -92,6 +95,7 @@ const AVATARS = fillAvatars();
 const createAd = function() {
   const coordY = getRandomNumber(Coords.MIN_Y, Coords.MAX_Y, DIGITS_COUNT);
   const coordX = getRandomNumber(Coords.MIN_X, Coords.MAX_X, DIGITS_COUNT);
+
   return {
     author: {
       avatar: getRandomArrayElement(AVATARS),
@@ -117,13 +121,15 @@ const createAd = function() {
 };
 
 const fillAds = function() {
-  const newAds = [];
+  const ads = [];
+
   for (let i = 0; i < OFFERS_COUNT; i++) {
-    newAds[i] = createAd();
+    ads[i] = createAd();
   }
-  return newAds;
+
+  return ads;
 };
 
 const ads = fillAds();
 
-export {ads};
+export {ads, TYPES};
