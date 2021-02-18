@@ -17,19 +17,14 @@ const Selectors = {
   AVATAR: '.popup__avatar',
 };
 
-const getNodes = function(selectors) {
+const getNodes = function(selectors, parent) {
   let nodes = {}
-  const key = Object.keys(selectors);
-  for (let i = 0; i < key.length; i++) {
-    nodes[key[i]] = POPUP.querySelector(selectors[key[i]]);
+  const key2 = Object.entries(selectors);
+  for (let [key, value] of key2) {
+    nodes[key] = parent.querySelector(value);
   }
   return nodes;
 }
-
-const NODES = getNodes(Selectors);
-/* eslint-disable no-console*/
-console.log(NODES)
-/* eslint-enable no-console*/
 
 const chooseType = function(type) {
   switch (type) {
@@ -72,16 +67,17 @@ const fillSimilarAds = function() {
   const SIMILAR_FRAGMENT = document.createDocumentFragment();
   for (let i = 0; i < ads.length; i++) {
     const similarAd = POPUP.cloneNode(true);
-    let title = similarAd.querySelector('.popup__title');
-    let address = similarAd.querySelector('.popup__text--address');
-    let price = similarAd.querySelector('.popup__text--price');
-    let type = similarAd.querySelector('.popup__type');
-    let capacity = similarAd.querySelector('.popup__text--capacity');
-    let time = similarAd.querySelector('.popup__text--time');
-    let features = similarAd.querySelector('.popup__features');
-    let description = similarAd.querySelector('.popup__description');
-    let photos = similarAd.querySelector('.popup__photos');
-    let avatar = similarAd.querySelector('.popup__avatar');
+    const similarAdNodeS = getNodes(Selectors, similarAd);
+    let title = similarAdNodeS.TITLE;
+    let address = similarAdNodeS.ADDRESS;
+    let price = similarAdNodeS.PRICE;
+    let type = similarAdNodeS.TYPE;
+    let capacity = similarAdNodeS.CAPACITY;
+    let time = similarAdNodeS.TIME;
+    let features = similarAdNodeS.FEATURES;
+    let description = similarAdNodeS.DESCRIPTION;
+    let photos = similarAdNodeS.PHOTOS;
+    let avatar = similarAdNodeS.AVATAR;
     title.textContent = ads[i].offer.titles;
     address.textContent = `${ads[i].offer.address.x}, ${ads[i].offer.address.y}`;
     price.innerHTML = `${ads[i].offer.price} <span>₽/ночь</span>`;
