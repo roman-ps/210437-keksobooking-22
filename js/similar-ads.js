@@ -29,6 +29,7 @@ const chooseType = function(type) {
 
 const renderFeatures = function(parent, features) {
   let children = parent.querySelectorAll(Popup.FUTURE);
+  let fragment = document.createDocumentFragment()
 
   for (let i = 0; i < children.length; i++) {
     children[i].classList.add('hidden')
@@ -36,8 +37,11 @@ const renderFeatures = function(parent, features) {
       if (children[i].className.includes(features[j])) {
         children[i].classList.remove('hidden');
       }
+      fragment.appendChild(children[i]);
     }
   }
+
+  return fragment;
 };
 
 const renderPhotos = function(parent, photos) {
@@ -52,7 +56,7 @@ const renderPhotos = function(parent, photos) {
     fragment.appendChild(newImg);
   }
   parent.removeChild(img);
-  
+
   return fragment;
 };
 
@@ -68,7 +72,7 @@ const fillAds = function() {
     adNodes.type.textContent = chooseType(ads[i].offer.type);
     adNodes.capacity.textContent = `${ads[i].offer.rooms} комнаты для ${ads[i].offer.guests} гостей`;
     adNodes.time.textContent = `Заезд после ${ads[i].offer.checkin}, выезд до ${ads[i].offer.checkout}`;
-    renderFeatures(adNodes.features, ads[i].offer.features);
+    adNodes.features.appendChild(renderFeatures(adNodes.features, ads[i].offer.features));
     adNodes.description.textContent = ads[i].offer.description;
     adNodes.photos.appendChild(renderPhotos(adNodes.photos, ads[i].offer.photos));
     adNodes.avatar.src = ads[i].author.avatar;
