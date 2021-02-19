@@ -52,6 +52,7 @@ const renderPhotos = function(parent, photos) {
     fragment.appendChild(newImg);
   }
   parent.removeChild(img);
+  
   return fragment;
 };
 
