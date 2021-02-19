@@ -80,21 +80,22 @@ const fillAvatarImgUrl = function(number) {
   return `img/avatars/user${id}.png`;
 }
 
-const fillAvatars = function() {
+const fillAvatars = function(maxIndex) {
   let avatars = [];
 
-  for (let i = 1; i <= AVATARS_MAX_INDEX; i++) {
+  for (let i = 1; i <= maxIndex; i++) {
     avatars.push(fillAvatarImgUrl(i));
   }
 
   return avatars;
 };
 
-const AVATARS = fillAvatars();
+const AVATARS = fillAvatars(AVATARS_MAX_INDEX);
 
 const createAd = function() {
   const coordY = getRandomNumber(Coords.MIN_Y, Coords.MAX_Y, DIGITS_COUNT);
   const coordX = getRandomNumber(Coords.MIN_X, Coords.MAX_X, DIGITS_COUNT);
+  const checks = getRandomArrayElement(CHECKINS);
 
   return {
     author: {
@@ -107,8 +108,8 @@ const createAd = function() {
       type: getRandomArrayElement(TYPES),
       rooms: getRandomNumber(Rooms.MIN, Rooms.MAX),
       guests: getRandomNumber(Guests.MIN, Guests.MAX),
-      checkin: getRandomArrayElement(CHECKINS),
-      checkout: getRandomArrayElement(CHECKINS),
+      checkin: checks,
+      checkout: checks,
       features: getRandomArrayList(FEATURES),
       description: getRandomArrayElement(DESCRIPTIONS),
       photos: getRandomArrayList(PHOTOS),
@@ -120,16 +121,16 @@ const createAd = function() {
   };
 };
 
-const createAds = function() {
+const createAds = function(offersCount) {
   const ads = [];
 
-  for (let i = 0; i < OFFERS_COUNT; i++) {
+  for (let i = 0; i < offersCount; i++) {
     ads[i] = createAd();
   }
 
   return ads;
 };
 
-const ads = createAds();
+const ads = createAds(OFFERS_COUNT);
 
 export {ads, TYPES};

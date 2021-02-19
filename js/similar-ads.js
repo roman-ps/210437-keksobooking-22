@@ -1,4 +1,5 @@
 import {ads, TYPES} from './data.js';
+import {getNodes} from './utils.js';
 
 const TMPL = document.querySelector('#card');
 const POPUP = TMPL.content.querySelector('.popup');
@@ -9,29 +10,18 @@ const Popup = {
   PHOTO: '.popup__photo',
 }
 
-const Selectors = {
-  Title: '.popup__title',
-  Address: '.popup__text--address',
-  Price: '.popup__text--price',
-  Type: '.popup__type',
-  Capacity: '.popup__text--capacity',
-  Time: '.popup__text--time',
-  Features: '.popup__features',
-  Description: '.popup__description',
-  Photos: '.popup__photos',
-  Avatar: '.popup__avatar',
+const SELECTORS = {
+  title: '.popup__title',
+  address: '.popup__text--address',
+  price: '.popup__text--price',
+  type: '.popup__type',
+  capacity: '.popup__text--capacity',
+  time: '.popup__text--time',
+  features: '.popup__features',
+  description: '.popup__description',
+  photos: '.popup__photos',
+  avatar: '.popup__avatar',
 };
-
-const getNodes = function(selectors, parent) {
-  let nodes = {}
-  const keys = Object.entries(selectors);
-
-  for (let [key, value] of keys) {
-    nodes[key] = parent.querySelector(value);
-  }
-
-  return nodes;
-}
 
 const chooseType = function(type) {
   return TYPES[type];
@@ -51,39 +41,40 @@ const renderFeatures = function(parent, features) {
 };
 
 const renderPhotos = function(parent, photos) {
-  const IMG = parent.querySelector(Popup.PHOTO);     // ищем элемент img в родительском элементе popup__photos
-  const FRAGMENT = document.createDocumentFragment()
+  let img = parent.querySelector(Popup.PHOTO);
+  let fragment = document.createDocumentFragment()
 
-  IMG.classList.add('hidden');                       // скрываем его
-  for (let i = 0; i < photos.length; i++) {          // в цикле:
-    let newImg = IMG.cloneNode(true);                // клонируем скрытый элемент
-    newImg.src = photos[i];                          // меняем значение атрибута src
-    newImg.classList.remove('hidden')                // показываем его
-    FRAGMENT.appendChild(newImg);                    // вставляем в родительский элемент
+  img.classList.add('hidden');
+  for (let i = 0; i < photos.length; i++) {
+    let newImg = img.cloneNode(true);
+    newImg.src = photos[i];
+    newImg.classList.remove('hidden')
+    fragment.appendChild(newImg);
   }
-  parent.appendChild(FRAGMENT)
-  parent.removeChild(IMG);                           // удаляем изначальный элемент
+  parent.removeChild(img);
+  return fragment;
 };
 
 const fillAds = function() {
-  const FRAGMENT = document.createDocumentFragment();
+  let fragment = document.createDocumentFragment();
+
   for (let i = 0; i < ads.length; i++) {
     const ad = POPUP.cloneNode(true);
-    const adNodes = getNodes(Selectors, ad);
-    adNodes.Title.textContent = ads[i].offer.titles;
-    adNodes.Address.textContent = `${ads[i].offer.address.x}, ${ads[i].offer.address.y}`;
-    adNodes.Price.innerHTML = `${ads[i].offer.price} <span>₽/ночь</span>`;
-    adNodes.Type.textContent = chooseType(ads[i].offer.type);
-    adNodes.Capacity.textContent = `${ads[i].offer.rooms} комнаты для ${ads[i].offer.guests} гостей`;
-    adNodes.Time.textContent = `Заезд после ${ads[i].offer.checkin}, выезд до ${ads[i].offer.checkout}`;
-    renderFeatures(adNodes.Features, ads[i].offer.features);
-    adNodes.Description.textContent = ads[i].offer.description;
-    renderPhotos(adNodes.Photos, ads[i].offer.photos)
-    adNodes.Avatar.src = ads[i].author.avatar;
-    FRAGMENT.appendChild(ad);
+    const adNodes = getNodes(SELECTORS, ad);
+    adNodes.title.textContent = ads[i].offer.titles;
+    adNodes.address.textContent = `${ads[i].offer.address.x}, ${ads[i].offer.address.y}`;
+    adNodes.price.innerHTML = `${ads[i].offer.price} <span>₽/ночь</span>`;
+    adNodes.type.textContent = chooseType(ads[i].offer.type);
+    adNodes.capacity.textContent = `${ads[i].offer.rooms} комнаты для ${ads[i].offer.guests} гостей`;
+    adNodes.time.textContent = `Заезд после ${ads[i].offer.checkin}, выезд до ${ads[i].offer.checkout}`;
+    renderFeatures(adNodes.features, ads[i].offer.features);
+    adNodes.description.textContent = ads[i].offer.description;
+    adNodes.photos.appendChild(renderPhotos(adNodes.photos, ads[i].offer.photos));
+    adNodes.avatar.src = ads[i].author.avatar;
+    fragment.appendChild(ad);
   }
 
-  return FRAGMENT;
+  return fragment;
 };
 
 const renderAds = fillAds();

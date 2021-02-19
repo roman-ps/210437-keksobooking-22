@@ -25,4 +25,15 @@ const getRandomArrayList = function(array) {
   });
 };
 
-export {getRandomNumber, getRandomArrayElement, getRandomArrayList};
+const getNodes = function(selectors, parent) {
+  let nodes = {}
+  const keys = Object.entries(selectors);
+
+  for (let [key, value] of keys) {
+    nodes[key] = parent.querySelector(value);
+  }
+
+  return nodes;
+}
+
+export {getRandomNumber, getRandomArrayElement, getRandomArrayList, getNodes};
