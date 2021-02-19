@@ -10,16 +10,16 @@ const Popup = {
 }
 
 const Selectors = {
-  TITLE: '.popup__title',
-  ADDRESS: '.popup__text--address',
-  PRICE: '.popup__text--price',
-  TYPE: '.popup__type',
-  CAPACITY: '.popup__text--capacity',
-  TIME: '.popup__text--time',
-  FEATURES: '.popup__features',
-  DESCRIPTION: '.popup__description',
-  PHOTOS: '.popup__photos',
-  AVATAR: '.popup__avatar',
+  Title: '.popup__title',
+  Address: '.popup__text--address',
+  Price: '.popup__text--price',
+  Type: '.popup__type',
+  Capacity: '.popup__text--capacity',
+  Time: '.popup__text--time',
+  Features: '.popup__features',
+  Description: '.popup__description',
+  Photos: '.popup__photos',
+  Avatar: '.popup__avatar',
 };
 
 const getNodes = function(selectors, parent) {
@@ -70,26 +70,16 @@ const fillAds = function() {
   for (let i = 0; i < ads.length; i++) {
     const ad = POPUP.cloneNode(true);
     const adNodes = getNodes(Selectors, ad);
-    let title = adNodes.TITLE;
-    let address = adNodes.ADDRESS;
-    let price = adNodes.PRICE;
-    let type = adNodes.TYPE;
-    let capacity = adNodes.CAPACITY;
-    let time = adNodes.TIME;
-    let features = adNodes.FEATURES;
-    let description = adNodes.DESCRIPTION;
-    let photos = adNodes.PHOTOS;
-    let avatar = adNodes.AVATAR;
-    title.textContent = ads[i].offer.titles;
-    address.textContent = `${ads[i].offer.address.x}, ${ads[i].offer.address.y}`;
-    price.innerHTML = `${ads[i].offer.price} <span>₽/ночь</span>`;
-    type.textContent = chooseType(ads[i].offer.type);
-    capacity.textContent = `${ads[i].offer.rooms} комнаты для ${ads[i].offer.guests} гостей`;
-    time.textContent = `Заезд после ${ads[i].offer.checkin}, выезд до ${ads[i].offer.checkout}`;
-    renderPhotos(photos, ads[i].offer.photos)
-    renderFeatures(features, ads[i].offer.features);
-    description.textContent = ads[i].offer.description;
-    avatar.src = ads[i].author.avatar;
+    adNodes.Title.textContent = ads[i].offer.titles;
+    adNodes.Address.textContent = `${ads[i].offer.address.x}, ${ads[i].offer.address.y}`;
+    adNodes.Price.innerHTML = `${ads[i].offer.price} <span>₽/ночь</span>`;
+    adNodes.Type.textContent = chooseType(ads[i].offer.type);
+    adNodes.Capacity.textContent = `${ads[i].offer.rooms} комнаты для ${ads[i].offer.guests} гостей`;
+    adNodes.Time.textContent = `Заезд после ${ads[i].offer.checkin}, выезд до ${ads[i].offer.checkout}`;
+    renderFeatures(adNodes.Features, ads[i].offer.features);
+    adNodes.Description.textContent = ads[i].offer.description;
+    renderPhotos(adNodes.Photos, ads[i].offer.photos)
+    adNodes.Avatar.src = ads[i].author.avatar;
     FRAGMENT.appendChild(ad);
   }
 
