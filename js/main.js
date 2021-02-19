@@ -1,5 +1,5 @@
-import {renderSimilarAds} from './similar-ads.js'
+import {renderAds} from './similar-ads.js'
 
 /* eslint-disable no-console*/
-console.log(renderSimilarAds)
+console.log(renderAds)
 /* eslint-enable no-console*/

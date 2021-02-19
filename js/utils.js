@@ -9,6 +9,9 @@ const getRandomNumber = function(min, max, digits = 0, r = Math.random()) {
 };
 
 const getRandomArrayElement = function(array) {
+  if (typeof array !== 'object' || array === null) {
+    throw new Error('Неправильный формат данных!');
+  }
   let newArray = Array.isArray(array) ? array : Object.keys(array);
 
   return newArray[getRandomNumber(0, newArray.length - 1)];

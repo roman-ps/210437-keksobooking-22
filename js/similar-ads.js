@@ -4,6 +4,11 @@ const TMPL = document.querySelector('#card');
 const POPUP = TMPL.content.querySelector('.popup');
 const MAP_CANVAS = document.querySelector('#map-canvas');
 
+const Popup = {
+  FUTURE: '.popup__feature',
+  PHOTO: '.popup__photo',
+}
+
 const Selectors = {
   TITLE: '.popup__title',
   ADDRESS: '.popup__text--address',
@@ -33,47 +38,48 @@ const chooseType = function(type) {
 };
 
 const renderFeatures = function(parent, features) {
-  let childs = parent.querySelectorAll('.popup__feature');
+  let children = parent.querySelectorAll(Popup.FUTURE);
 
-  childs.forEach((elem) => elem.classList.add('hidden'));
-  for (let i = 0; i < childs.length; i++) {
+  for (let i = 0; i < children.length; i++) {
+    children[i].classList.add('hidden')
     for (let j = 0; j < features.length; j++) {
-      if (childs[i].className.includes(features[j])) {
-        childs[i].classList.remove('hidden');
+      if (children[i].className.includes(features[j])) {
+        children[i].classList.remove('hidden');
       }
     }
   }
 };
 
 const renderPhotos = function(parent, photos) {
-  const IMG = parent.querySelector('.popup__photo'); // ищем элемент img в родительском элементе popup__photos
+  const IMG = parent.querySelector(Popup.PHOTO);     // ищем элемент img в родительском элементе popup__photos
+  const FRAGMENT = document.createDocumentFragment()
 
   IMG.classList.add('hidden');                       // скрываем его
   for (let i = 0; i < photos.length; i++) {          // в цикле:
     let newImg = IMG.cloneNode(true);                // клонируем скрытый элемент
     newImg.src = photos[i];                          // меняем значение атрибута src
     newImg.classList.remove('hidden')                // показываем его
-    parent.appendChild(newImg);                      // вставляем в родительский элемент
+    FRAGMENT.appendChild(newImg);                    // вставляем в родительский элемент
   }
+  parent.appendChild(FRAGMENT)
   parent.removeChild(IMG);                           // удаляем изначальный элемент
 };
 
-const fillSimilarAds = function() {
-  const SIMILAR_FRAGMENT = document.createDocumentFragment();
-
+const fillAds = function() {
+  const FRAGMENT = document.createDocumentFragment();
   for (let i = 0; i < ads.length; i++) {
-    const similarAd = POPUP.cloneNode(true);
-    const similarAdNodeS = getNodes(Selectors, similarAd);
-    let title = similarAdNodeS.TITLE;
-    let address = similarAdNodeS.ADDRESS;
-    let price = similarAdNodeS.PRICE;
-    let type = similarAdNodeS.TYPE;
-    let capacity = similarAdNodeS.CAPACITY;
-    let time = similarAdNodeS.TIME;
-    let features = similarAdNodeS.FEATURES;
-    let description = similarAdNodeS.DESCRIPTION;
-    let photos = similarAdNodeS.PHOTOS;
-    let avatar = similarAdNodeS.AVATAR;
+    const ad = POPUP.cloneNode(true);
+    const adNodes = getNodes(Selectors, ad);
+    let title = adNodes.TITLE;
+    let address = adNodes.ADDRESS;
+    let price = adNodes.PRICE;
+    let type = adNodes.TYPE;
+    let capacity = adNodes.CAPACITY;
+    let time = adNodes.TIME;
+    let features = adNodes.FEATURES;
+    let description = adNodes.DESCRIPTION;
+    let photos = adNodes.PHOTOS;
+    let avatar = adNodes.AVATAR;
     title.textContent = ads[i].offer.titles;
     address.textContent = `${ads[i].offer.address.x}, ${ads[i].offer.address.y}`;
     price.innerHTML = `${ads[i].offer.price} <span>₽/ночь</span>`;
@@ -84,17 +90,17 @@ const fillSimilarAds = function() {
     renderFeatures(features, ads[i].offer.features);
     description.textContent = ads[i].offer.description;
     avatar.src = ads[i].author.avatar;
-    SIMILAR_FRAGMENT.appendChild(similarAd);
+    FRAGMENT.appendChild(ad);
   }
 
-  return SIMILAR_FRAGMENT;
+  return FRAGMENT;
 };
 
-const renderSimilarAds = fillSimilarAds();
+const renderAds = fillAds();
 
-MAP_CANVAS.appendChild(renderSimilarAds.childNodes[0]);
+MAP_CANVAS.appendChild(renderAds.childNodes[0]);
 
-export {renderSimilarAds};
+export {renderAds};
 
 /* eslint-disable no-console*/
 console.log(ads);

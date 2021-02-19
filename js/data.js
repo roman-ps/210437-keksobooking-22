@@ -75,9 +75,9 @@ const DIGITS_COUNT = 2;
 const AVATARS_MAX_INDEX = 8;
 
 const fillAvatarImgUrl = function(number) {
-  const numberPrefix = `${number}`.padStart(2, '0');
+  const id = `${number}`.padStart(2, '0');
 
-  return `img/avatars/user${numberPrefix}.png`;
+  return `img/avatars/user${id}.png`;
 }
 
 const fillAvatars = function() {
@@ -120,7 +120,7 @@ const createAd = function() {
   };
 };
 
-const fillAds = function() {
+const createAds = function() {
   const ads = [];
 
   for (let i = 0; i < OFFERS_COUNT; i++) {
@@ -130,6 +130,6 @@ const fillAds = function() {
   return ads;
 };
 
-const ads = fillAds();
+const ads = createAds();
 
 export {ads, TYPES};
