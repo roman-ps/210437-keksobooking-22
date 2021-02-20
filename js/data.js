@@ -1,4 +1,4 @@
-import {getRandomNumber, getRandomArrayElement, getRandomArrayList} from './utils.js';
+import {getRandomNumber, getRandomElement, getRandomArrayList} from './utils.js';
 
 const TITLES = [
   'Уютная квартирка в центре города',
@@ -20,7 +20,7 @@ const DESCRIPTIONS = [
   'Из окна видны высокие горы',
 ];
 
-const TYPES = {
+const HOUSE_TYPES = {
   palace: 'Дворец',
   flat: 'Квартира',
   house: 'Дом',
@@ -95,23 +95,23 @@ const AVATARS = fillAvatars(AVATARS_MAX_INDEX);
 const createAd = function() {
   const coordY = getRandomNumber(Coords.MIN_Y, Coords.MAX_Y, DIGITS_COUNT);
   const coordX = getRandomNumber(Coords.MIN_X, Coords.MAX_X, DIGITS_COUNT);
-  const checks = getRandomArrayElement(CHECKINS);
+  const checks = getRandomElement(CHECKINS);
 
   return {
     author: {
-      avatar: getRandomArrayElement(AVATARS),
+      avatar: getRandomElement(AVATARS),
     },
     offer: {
-      titles: getRandomArrayElement(TITLES),
+      titles: getRandomElement(TITLES),
       address: {x: coordX, y: coordY},
       price: getRandomNumber(Prices.MIN, Prices.MAX),
-      type: getRandomArrayElement(TYPES),
+      type: getRandomElement(HOUSE_TYPES),
       rooms: getRandomNumber(Rooms.MIN, Rooms.MAX),
       guests: getRandomNumber(Guests.MIN, Guests.MAX),
       checkin: checks,
       checkout: checks,
       features: getRandomArrayList(FEATURES),
-      description: getRandomArrayElement(DESCRIPTIONS),
+      description: getRandomElement(DESCRIPTIONS),
       photos: getRandomArrayList(PHOTOS),
     },
     location: {
@@ -133,4 +133,4 @@ const createAds = function(offersCount) {
 
 const ads = createAds(OFFERS_COUNT);
 
-export {ads, TYPES};
+export {ads, HOUSE_TYPES};

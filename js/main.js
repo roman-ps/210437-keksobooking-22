@@ -1,4 +1,5 @@
-import {renderAds} from './similar-ads.js'
+import {renderAds} from './similar-ads.js';
+import './form.js';
 
 /* eslint-disable no-console*/
 console.log(renderAds)

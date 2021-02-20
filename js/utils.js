@@ -8,7 +8,7 @@ const getRandomNumber = function(min, max, digits = 0, r = Math.random()) {
   return Math.round(randomNumber * degree) / degree;
 };
 
-const getRandomArrayElement = function(array) {
+const getRandomElement = function(array) {
   if (typeof array !== 'object' || array === null) {
     throw new Error('Неправильный формат данных!');
   }
@@ -36,4 +36,4 @@ const getNodes = function(selectors, parent) {
   return nodes;
 }
 
-export {getRandomNumber, getRandomArrayElement, getRandomArrayList, getNodes};
+export {getRandomNumber, getRandomElement, getRandomArrayList, getNodes};
