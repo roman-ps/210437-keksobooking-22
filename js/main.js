@@ -1,5 +1,5 @@
 import {renderAds} from './ads.js';
-import {} from './form.js';
+import './form.js';
 
 const MAP_CANVAS = document.querySelector('#map-canvas');
 MAP_CANVAS.appendChild(renderAds.firstElementChild);
