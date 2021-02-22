@@ -1,5 +1,6 @@
 import {renderAds} from './similar-ads.js';
 import {events} from './form.js';
+import {} from './form.js';
 
 const MAP_CANVAS = document.querySelector('#map-canvas');
 MAP_CANVAS.appendChild(renderAds.childNodes[0]);
