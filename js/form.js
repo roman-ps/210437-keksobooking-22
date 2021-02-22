@@ -13,6 +13,7 @@ const HOUSE_PRICE = {
 const fieldTypeChangeHandler = function(evt) {
   let value = evt.target.value;
   FIELD_PRICE.setAttribute('placeholder', HOUSE_PRICE[value]);
+  FIELD_PRICE.value = HOUSE_PRICE[value];
 };
 
 const fieldTimeinChangeHandler = function(evt) {
