@@ -121,7 +121,7 @@ const createAd = function() {
   };
 };
 
-const createAds = function(offersCount) {
+const getAdsData = function(offersCount) {
   const ads = [];
 
   for (let i = 0; i < offersCount; i++) {
@@ -131,6 +131,4 @@ const createAds = function(offersCount) {
   return ads;
 };
 
-const ads = createAds(OFFERS_COUNT);
-
-export {ads, HOUSE_TYPES};
+export {getAdsData, HOUSE_TYPES, OFFERS_COUNT};

@@ -1,7 +1,9 @@
-import {ads, HOUSE_TYPES} from './data.js';
-import {getNodes} from './utils.js';
+import {getAdsData, OFFERS_COUNT, HOUSE_TYPES} from './data.js';
+import {getNodes, pluralize} from './utils.js';
 
-const TMPL = document.querySelector('#card');
+const ads = getAdsData(OFFERS_COUNT);
+
+const CARD_TEMPLATE = document.querySelector('#card');
 
 const Popup = {
   FEATURE: '.popup__feature',
@@ -32,10 +34,6 @@ const GUESTS_OPTIONS = [
   'гостей',
   'гостей',
 ]
-
-const pluralize = function(n, variants) {
-  return variants[[(n % 10 === 1 && n % 100 !== 11) ? 0 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2]];
-}
 
 const getHouseType = function(type) {
   return HOUSE_TYPES[type];
@@ -74,19 +72,25 @@ const renderPhotos = function(parent, photos) {
   return fragment;
 };
 
-const fillAds = function() {
+const getCapacityText = function(offer) {
+  const rooms = pluralize(offer.rooms, ROOMS_OPTIONS);
+  const guests = pluralize(offer.rooms, GUESTS_OPTIONS);
+  return `${offer.rooms} ${rooms} для ${offer.guests} ${guests}`;
+}
+
+
+
+const fillAds = function(counter) {
   let fragment = document.createDocumentFragment();
 
-  for (let i = 0; i < ads.length; i++) {
-    const ad = TMPL.content.cloneNode(true);
+  for (let i = 0; i < counter; i++) {
+    const ad = CARD_TEMPLATE.content.cloneNode(true);
     const adNodes = getNodes(SELECTORS, ad);
-    const rooms = pluralize(ads[i].offer.rooms, ROOMS_OPTIONS);
-    const guests = pluralize(ads[i].offer.rooms, GUESTS_OPTIONS);
     adNodes.title.textContent = ads[i].offer.titles;
     adNodes.address.textContent = `${ads[i].offer.address.x}, ${ads[i].offer.address.y}`;
     adNodes.price.innerHTML = `${ads[i].offer.price} <span>₽/ночь</span>`;
     adNodes.type.textContent = getHouseType(ads[i].offer.type);
-    adNodes.capacity.textContent = `${ads[i].offer.rooms} ${rooms} для ${ads[i].offer.guests} ${guests}`;
+    adNodes.capacity.textContent = getCapacityText(ads[i].offer);
     adNodes.time.textContent = `Заезд после ${ads[i].offer.checkin}, выезд до ${ads[i].offer.checkout}`;
     adNodes.features.appendChild(renderFeatures(adNodes.features, ads[i].offer.features));
     adNodes.description.textContent = ads[i].offer.description;
@@ -98,7 +102,7 @@ const fillAds = function() {
   return fragment;
 };
 
-const renderAds = fillAds();
+const renderAds = fillAds(OFFERS_COUNT);
 
 export {renderAds};
 

@@ -25,6 +25,10 @@ const fieldTimeoutChangeHandler = function(evt) {
   FIELD_TIMEIN.value = currentValue;
 };
 
-FIELD_TYPE.addEventListener('change', fieldTypeChangeHandler);
-FIELD_TIMEIN.addEventListener('change', fieldTimeinChangeHandler);
-FIELD_TIMEOUT.addEventListener('change', fieldTimeoutChangeHandler);
+const addEventListeners = function() {
+  FIELD_TYPE.addEventListener('change', fieldTypeChangeHandler);
+  FIELD_TIMEIN.addEventListener('change', fieldTimeinChangeHandler);
+  FIELD_TIMEOUT.addEventListener('change', fieldTimeoutChangeHandler);
+};
+
+export {addEventListeners}
