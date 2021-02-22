@@ -3,7 +3,6 @@ import {getNodes} from './utils.js';
 
 const TMPL = document.querySelector('#card');
 const POPUP = TMPL.content.querySelector('.popup');
-const MAP_CANVAS = document.querySelector('#map-canvas');
 
 const Popup = {
   FEATURE: '.popup__feature',
@@ -22,6 +21,22 @@ const SELECTORS = {
   photos: '.popup__photos',
   avatar: '.popup__avatar',
 };
+
+const ROOMS_OPTIONS = [
+  'комната',
+  'комнаты',
+  'комнат',
+]
+
+const GUESTS_OPTIONS = [
+  'гостя',
+  'гостей',
+  'гостей',
+]
+
+const pluralize = function(n, variants) {
+  return variants[[(n % 10 === 1 && n % 100 !== 11) ? 0 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2]];
+}
 
 const getHouseType = function(type) {
   return HOUSE_TYPES[type];
@@ -66,11 +81,13 @@ const fillAds = function() {
   for (let i = 0; i < ads.length; i++) {
     const ad = POPUP.cloneNode(true);
     const adNodes = getNodes(SELECTORS, ad);
+    const rooms = pluralize(ads[i].offer.rooms, ROOMS_OPTIONS);
+    const guests = pluralize(ads[i].offer.rooms, GUESTS_OPTIONS);
     adNodes.title.textContent = ads[i].offer.titles;
     adNodes.address.textContent = `${ads[i].offer.address.x}, ${ads[i].offer.address.y}`;
     adNodes.price.innerHTML = `${ads[i].offer.price} <span>₽/ночь</span>`;
     adNodes.type.textContent = getHouseType(ads[i].offer.type);
-    adNodes.capacity.textContent = `${ads[i].offer.rooms} комнаты для ${ads[i].offer.guests} гостей`;
+    adNodes.capacity.textContent = `${ads[i].offer.rooms} ${rooms} для ${ads[i].offer.guests} ${guests}`;
     adNodes.time.textContent = `Заезд после ${ads[i].offer.checkin}, выезд до ${ads[i].offer.checkout}`;
     adNodes.features.appendChild(renderFeatures(adNodes.features, ads[i].offer.features));
     adNodes.description.textContent = ads[i].offer.description;
@@ -83,8 +100,6 @@ const fillAds = function() {
 };
 
 const renderAds = fillAds();
-
-MAP_CANVAS.appendChild(renderAds.childNodes[0]);
 
 export {renderAds};
 
