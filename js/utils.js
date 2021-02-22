@@ -8,7 +8,7 @@ const getRandomNumber = function(min, max, digits = 0, r = Math.random()) {
   return Math.round(randomNumber * degree) / degree;
 };
 
-const getRandomArrayElement = function(array) {
+const getRandomElement = function(array) {
   if (typeof array !== 'object' || array === null) {
     throw new Error('Неправильный формат данных!');
   }
@@ -36,4 +36,8 @@ const getNodes = function(selectors, parent) {
   return nodes;
 }
 
-export {getRandomNumber, getRandomArrayElement, getRandomArrayList, getNodes};
+const pluralize = function(n, variants) {
+  return variants[[(n % 10 === 1 && n % 100 !== 11) ? 0 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2]];
+}
+
+export {getRandomNumber, getRandomElement, getRandomArrayList, getNodes, pluralize};
