@@ -13,11 +13,20 @@ const HOUSE_PRICE = {
   bungalow: 0,
 };
 
-const disableNode = function(node, field) {
-  node.classList.add('ad-form--disabled');
-  let children = node.querySelectorAll(field);
+const disableFormFields = function(node, childFields, classNode = 'ad-form--disabled') {
+  node.classList.add(classNode);
+  let children = node.querySelectorAll(childFields);
   children.forEach((elem) => elem.setAttribute('disabled', ''));
 }
+
+const enableFormFields = function(node, childFields, classNode = 'ad-form--disabled') {
+  node.classList.remove(classNode);
+  let children = node.querySelectorAll(childFields);
+  children.forEach((elem) => elem.removeAttribute('disabled'));
+}
+
+enableFormFields(FORM, 'fieldset');
+enableFormFields(MAP_FILTERS, 'select');
 
 const fieldTypeChangeHandler = function(evt) {
   let value = evt.target.value;
@@ -39,8 +48,8 @@ const addEventListeners = function() {
   FIELD_TYPE.addEventListener('change', fieldTypeChangeHandler);
   FIELD_TIMEIN.addEventListener('change', fieldTimeinChangeHandler);
   FIELD_TIMEOUT.addEventListener('change', fieldTimeoutChangeHandler);
-  disableNode(FORM, 'fieldset');
-  disableNode(MAP_FILTERS, 'select');
+  disableFormFields(FORM, 'fieldset');
+  disableFormFields(MAP_FILTERS, 'select');
 };
 
-export {addEventListeners}
+export {addEventListeners, FORM, MAP_FILTERS, enableFormFields}
