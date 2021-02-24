@@ -107,5 +107,5 @@ const renderAds = fillAds(OFFERS_COUNT);
 export {renderAds};
 
 /* eslint-disable no-console*/
-console.log(renderAds)
+
 /* eslint-enable no-console*/
