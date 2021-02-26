@@ -1,15 +1,14 @@
-import {renderAds} from './ads.js';
-import {addEventListeners, FORM, MAP_FILTERS, enableFormFields} from './form.js';
+import {renderAds, ads} from './ads.js';
+import {addEventListeners, FORM, MAP_FILTERS, FIELD_ADDRESS, enableFormFields} from './form.js';
 
 addEventListeners();
 
 /* eslint-disable no-console*/
-console.log(renderAds);
+console.log(ads);
 /* eslint-enable no-console*/
 
 const map = L.map('map-canvas')
   .on('load', () => {
-    console.log('Карта загрузилась');
     enableFormFields(FORM, 'fieldset');
     enableFormFields(MAP_FILTERS, 'select');
   })
@@ -42,13 +41,44 @@ const mainMarker = L.marker(
   },
 );
 
+const fillPoints = function(array) {
+  let points = [];
+  for (let i = 0; i < array.length; i++) {
+    points.push({
+      title: array[i].offer.titles,
+      lat: array[i].location.x,
+      lng: array[i].location.y,
+    })
+  }
+  return points;
+}
+
+const points = fillPoints(ads);
+
+points.forEach(({lat, lng}) => {
+  const icon = L.icon({
+    iconUrl: '../img/pin.svg',
+    iconSize: [40, 40],
+    iconAnchor: [20, 20],
+  })
+  const marker = L.marker({
+    lat,
+    lng,
+  });
+  marker.addTo(map);
+})
+
 const addToMap = function() {
   mainMarker.addTo(map);
   layer.addTo(map);
+  // points.addTo(map);
 }
 
-addToMap();
-
 mainMarker.on('moveend', (evt) => {
-  console.log(evt.target.getLatLng());
+  let x = evt.target.getLatLng().lat
+  let y = evt.target.getLatLng().lng
+  FIELD_ADDRESS.value = `${x}, ${y}`;
 });
+
+addToMap();
+// mainMarker.remove();

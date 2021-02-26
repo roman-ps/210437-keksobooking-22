@@ -104,7 +104,7 @@ const fillAds = function(counter) {
 
 const renderAds = fillAds(OFFERS_COUNT);
 
-export {renderAds};
+export {renderAds, ads};
 
 /* eslint-disable no-console*/
 

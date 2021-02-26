@@ -4,7 +4,7 @@ const FIELD_TIMEIN = document.querySelector('#timein');
 const FIELD_TIMEOUT = document.querySelector('#timeout');
 const FORM = document.querySelector('.ad-form');
 const MAP_FILTERS = document.querySelector('.map__filters');
-
+const FIELD_ADDRESS = FORM.querySelector('#address');
 
 const HOUSE_PRICE = {
   palace: 10000,
@@ -24,9 +24,6 @@ const enableFormFields = function(node, childFields, classNode = 'ad-form--disab
   let children = node.querySelectorAll(childFields);
   children.forEach((elem) => elem.removeAttribute('disabled'));
 }
-
-enableFormFields(FORM, 'fieldset');
-enableFormFields(MAP_FILTERS, 'select');
 
 const fieldTypeChangeHandler = function(evt) {
   let value = evt.target.value;
@@ -52,4 +49,4 @@ const addEventListeners = function() {
   disableFormFields(MAP_FILTERS, 'select');
 };
 
-export {addEventListeners, FORM, MAP_FILTERS, enableFormFields}
+export {addEventListeners, FORM, MAP_FILTERS, FIELD_ADDRESS, enableFormFields}
