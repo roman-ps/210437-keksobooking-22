@@ -84,6 +84,7 @@ const addToMap = function() {
   layer.addTo(map);
 }
 
+addToMap();
 /*eslint-enable */
 
 export {addToMap}
