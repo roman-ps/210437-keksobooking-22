@@ -4,8 +4,8 @@ import {addEventListeners, FORM, MAP_FILTERS, FIELD_ADDRESS, enableFormFields} f
 addEventListeners();
 
 const DEFAULT_COORD = {
-  x: 35.68951,
-  y: 139.69171,
+  lat: 35.68951,
+  lng: 139.69171,
 }
 const VIEW_MAP = 11;
 const MAIN_ICON_SIZE = [52, 52];
@@ -20,34 +20,31 @@ function initMap() {
       enableFormFields(FORM, 'fieldset');
       enableFormFields(MAP_FILTERS, 'select');
     })
-    .setView({
-      lat: DEFAULT_COORD.x,
-      lng: DEFAULT_COORD.y,
-    }, VIEW_MAP);
+    .setView(DEFAULT_COORD, VIEW_MAP);
 
   const layer = L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     },
-  ).addTo(map);
+  )
+
+  layer.addTo(map);
 
   const mainIcon = L.icon({
     iconUrl: '../img/main-pin.svg',
     iconSize: MAIN_ICON_SIZE,
     iconAnchor: MAIN_ICON_ANCHOR,
-  })
+  });
 
   const mainMarker = L.marker(
-    {
-      lat: DEFAULT_COORD.x,
-      lng: DEFAULT_COORD.y,
-    },
+    DEFAULT_COORD,
     {
       draggable: true,
       icon: mainIcon,
     },
   );
+
   mainMarker.addTo(map);
 
   const fillPoints = function(array) {
