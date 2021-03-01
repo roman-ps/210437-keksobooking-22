@@ -14,6 +14,7 @@ const MAIN_ICON_ANCHOR = [26, 52];
 const ICON_ANCHOR = [20, 20];
 const ICON_URL = 'img/pin.svg';
 const MAIN_ICON_URL = 'img/main-pin.svg';
+const DIGITS_COUNT = 5;
 
 /*eslint-disable */
 const LEAFLET = L;
@@ -88,9 +89,10 @@ function initMap() {
   });
 
   mainMarker.on('moveend', (evt) => {
-    let x = evt.target.getLatLng().lat
-    let y = evt.target.getLatLng().lng
-    FIELD_ADDRESS.value = `${x}, ${y}`;
+    let degree =  Math.pow(10, DIGITS_COUNT);
+    let x = evt.target.getLatLng().lat;
+    let y = evt.target.getLatLng().lng;
+    FIELD_ADDRESS.value = `${Math.round(x * degree) / degree}, ${Math.round(y * degree) / degree}`;
   });
 }
 
