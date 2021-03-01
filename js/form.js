@@ -2,9 +2,9 @@ const FIELD_TYPE = document.querySelector('#type');
 const FIELD_PRICE = document.querySelector('#price');
 const FIELD_TIMEIN = document.querySelector('#timein');
 const FIELD_TIMEOUT = document.querySelector('#timeout');
-const FORM = document.querySelector('.ad-form');
+const AD_FORM = document.querySelector('.ad-form');
 const MAP_FILTERS = document.querySelector('.map__filters');
-const FIELD_ADDRESS = FORM.querySelector('#address');
+const FIELD_ADDRESS = AD_FORM.querySelector('#address');
 
 const HOUSE_PRICE = {
   palace: 10000,
@@ -45,8 +45,11 @@ const addEventListeners = function() {
   FIELD_TYPE.addEventListener('change', fieldTypeChangeHandler);
   FIELD_TIMEIN.addEventListener('change', fieldTimeinChangeHandler);
   FIELD_TIMEOUT.addEventListener('change', fieldTimeoutChangeHandler);
-  disableFormFields(FORM, 'fieldset');
-  disableFormFields(MAP_FILTERS, 'select');
 };
 
-export {addEventListeners, FORM, MAP_FILTERS, FIELD_ADDRESS, enableFormFields}
+const disableForm = function() {
+  disableFormFields(AD_FORM, 'fieldset');
+  disableFormFields(MAP_FILTERS, 'select');
+}
+
+export {addEventListeners, disableForm, AD_FORM, MAP_FILTERS, FIELD_ADDRESS, enableFormFields}

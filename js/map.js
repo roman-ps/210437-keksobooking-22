@@ -1,7 +1,7 @@
-import {ads} from './ads.js';
-import {addEventListeners, FORM, MAP_FILTERS, FIELD_ADDRESS, enableFormFields} from './form.js';
+import {getAdsData, OFFERS_COUNT} from './data.js';
+import {AD_FORM, MAP_FILTERS, FIELD_ADDRESS, enableFormFields} from './form.js';
 
-addEventListeners();
+const ads = getAdsData(OFFERS_COUNT);
 
 const DEFAULT_COORD = {
   lat: 35.68951,
@@ -14,15 +14,18 @@ const MAIN_ICON_ANCHOR = [26, 52];
 const ICON_ANCHOR = [20, 20];
 
 /*eslint-disable */
+const LEAFLET = L;
+/*eslint-enable */
+
 function initMap() {
-  const map = L.map('map-canvas')
+  const map = LEAFLET.map('map-canvas')
     .on('load', () => {
-      enableFormFields(FORM, 'fieldset');
+      enableFormFields(AD_FORM, 'fieldset');
       enableFormFields(MAP_FILTERS, 'select');
     })
     .setView(DEFAULT_COORD, VIEW_MAP);
 
-  const layer = L.tileLayer(
+  const layer = LEAFLET.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -31,13 +34,13 @@ function initMap() {
 
   layer.addTo(map);
 
-  const mainIcon = L.icon({
+  const mainIcon = LEAFLET.icon({
     iconUrl: '../img/main-pin.svg',
     iconSize: MAIN_ICON_SIZE,
     iconAnchor: MAIN_ICON_ANCHOR,
   });
 
-  const mainMarker = L.marker(
+  const mainMarker = LEAFLET.marker(
     DEFAULT_COORD,
     {
       draggable: true,
@@ -62,13 +65,13 @@ function initMap() {
   const points = fillPoints(ads);
 
   points.forEach(({lat, lng, title}) => {
-    const icon = L.icon({
+    const icon = LEAFLET.icon({
       iconUrl: '../img/pin.svg',
       iconSize: ICON_SIZE,
       iconAnchor: ICON_ANCHOR,
     });
 
-    const marker = L.marker(
+    const marker = LEAFLET.marker(
       {
         lat,
         lng,
@@ -88,7 +91,5 @@ function initMap() {
     FIELD_ADDRESS.value = `${x}, ${y}`;
   });
 }
-
-/*eslint-enable */
 
 export {initMap}

@@ -1,7 +1,5 @@
-import {getAdsData, OFFERS_COUNT, HOUSE_TYPES} from './data.js';
+import {HOUSE_TYPES} from './data.js';
 import {getNodes, pluralize} from './utils.js';
-
-const ads = getAdsData(OFFERS_COUNT);
 
 const CARD_TEMPLATE = document.querySelector('#card');
 
@@ -78,33 +76,25 @@ const getCapacityText = function(offer) {
   return `${offer.rooms} ${rooms} для ${offer.guests} ${guests}`;
 }
 
+const fillCard = function(cardData) {
+  const ad = CARD_TEMPLATE.content.cloneNode(true);
+  const adNodes = getNodes(SELECTORS, ad);
 
+  adNodes.title.textContent = cardData.offer.titles;
+  adNodes.address.textContent = `${cardData.offer.address.x}, ${cardData.offer.address.y}`;
+  adNodes.price.innerHTML = `${cardData.offer.price} <span>₽/ночь</span>`;
+  adNodes.type.textContent = getHouseType(cardData.offer.type);
+  adNodes.capacity.textContent = getCapacityText(cardData.offer);
+  adNodes.time.textContent = `Заезд после ${cardData.offer.checkin}, выезд до ${cardData.offer.checkout}`;
+  adNodes.features.appendChild(renderFeatures(adNodes.features, cardData.offer.features));
+  adNodes.description.textContent = cardData.offer.description;
+  adNodes.photos.appendChild(renderPhotos(adNodes.photos, cardData.offer.photos));
+  adNodes.avatar.src = cardData.author.avatar;
 
-const fillAds = function(counter) {
-  let fragment = document.createDocumentFragment();
+  return ad;
+}
 
-  for (let i = 0; i < counter; i++) {
-    const ad = CARD_TEMPLATE.content.cloneNode(true);
-    const adNodes = getNodes(SELECTORS, ad);
-    adNodes.title.textContent = ads[i].offer.titles;
-    adNodes.address.textContent = `${ads[i].offer.address.x}, ${ads[i].offer.address.y}`;
-    adNodes.price.innerHTML = `${ads[i].offer.price} <span>₽/ночь</span>`;
-    adNodes.type.textContent = getHouseType(ads[i].offer.type);
-    adNodes.capacity.textContent = getCapacityText(ads[i].offer);
-    adNodes.time.textContent = `Заезд после ${ads[i].offer.checkin}, выезд до ${ads[i].offer.checkout}`;
-    adNodes.features.appendChild(renderFeatures(adNodes.features, ads[i].offer.features));
-    adNodes.description.textContent = ads[i].offer.description;
-    adNodes.photos.appendChild(renderPhotos(adNodes.photos, ads[i].offer.photos));
-    adNodes.avatar.src = ads[i].author.avatar;
-    fragment.appendChild(ad);
-  }
-
-  return fragment;
-};
-
-const renderAds = fillAds(OFFERS_COUNT);
-
-export {renderAds, ads};
+export {fillCard};
 
 /* eslint-disable no-console*/
 
