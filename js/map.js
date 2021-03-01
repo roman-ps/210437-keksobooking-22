@@ -12,6 +12,8 @@ const MAIN_ICON_SIZE = [52, 52];
 const ICON_SIZE = [40, 40];
 const MAIN_ICON_ANCHOR = [26, 52];
 const ICON_ANCHOR = [20, 20];
+const ICON_URL = 'img/pin.svg';
+const MAIN_ICON_URL = 'img/main-pin.svg';
 
 /*eslint-disable */
 const LEAFLET = L;
@@ -35,7 +37,7 @@ function initMap() {
   layer.addTo(map);
 
   const mainIcon = LEAFLET.icon({
-    iconUrl: '../img/main-pin.svg',
+    iconUrl: MAIN_ICON_URL,
     iconSize: MAIN_ICON_SIZE,
     iconAnchor: MAIN_ICON_ANCHOR,
   });
@@ -66,7 +68,7 @@ function initMap() {
 
   points.forEach(({lat, lng, title}) => {
     const icon = LEAFLET.icon({
-      iconUrl: '../img/pin.svg',
+      iconUrl: ICON_URL,
       iconSize: ICON_SIZE,
       iconAnchor: ICON_ANCHOR,
     });
