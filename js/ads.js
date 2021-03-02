@@ -3,9 +3,9 @@ import {getNodes, pluralize} from './utils.js';
 
 const CARD_TEMPLATE = document.querySelector('#card');
 
-const Popup = {
-  FEATURE: '.popup__feature',
-  PHOTO: '.popup__photo',
+const POPUP_SELECTORS = {
+  feature: '.popup__feature',
+  photo: '.popup__photo',
 };
 
 const SELECTORS = {
@@ -38,7 +38,7 @@ const getHouseType = function(type) {
 };
 
 const renderFeatures = function(parent, features) {
-  let children = parent.querySelectorAll(Popup.FEATURE);
+  let children = parent.querySelectorAll(POPUP_SELECTORS.feature);
   let fragment = document.createDocumentFragment()
 
   children.forEach(function(child) {
@@ -55,7 +55,7 @@ const renderFeatures = function(parent, features) {
 };
 
 const renderPhotos = function(parent, photos) {
-  let img = parent.querySelector(Popup.PHOTO);
+  let img = parent.querySelector(POPUP_SELECTORS.photo);
   let fragment = document.createDocumentFragment()
 
   img.classList.add('hidden');
@@ -95,7 +95,3 @@ const fillCard = function(cardData) {
 }
 
 export {fillCard};
-
-/* eslint-disable no-console*/
-
-/* eslint-enable no-console*/

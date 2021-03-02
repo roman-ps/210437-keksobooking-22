@@ -47,9 +47,14 @@ const addEventListeners = function() {
   FIELD_TIMEOUT.addEventListener('change', fieldTimeoutChangeHandler);
 };
 
-const disableForm = function() {
+const disableForms = function() {
   disableFormFields(AD_FORM, 'fieldset');
   disableFormFields(MAP_FILTERS, 'select');
 }
 
-export {addEventListeners, disableForm, AD_FORM, MAP_FILTERS, FIELD_ADDRESS, enableFormFields}
+const enableForms = function() {
+  enableFormFields(AD_FORM, 'fieldset');
+  enableFormFields(MAP_FILTERS, 'select');
+}
+
+export {addEventListeners, disableForms, FIELD_ADDRESS, enableForms}

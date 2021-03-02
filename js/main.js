@@ -1,10 +1,6 @@
 import {initMap} from './map.js';
-import {addEventListeners, disableForm} from './form.js';
+import {addEventListeners, disableForms} from './form.js';
 
 addEventListeners();
-disableForm();
+disableForms();
 initMap();
-
-/* eslint-disable no-console*/
-
-/* eslint-enable no-console*/
