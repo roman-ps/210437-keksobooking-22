@@ -61,26 +61,12 @@ function initMap() {
 
   mainMarker.addTo(map);
 
-  const fillPoints = function(array) {
-    // let points = [];
-    // for (let i = 0; i < array.length; i++) {
-    //   points.push({
-    //     title: array[i].offer.titles,
-    //     lat: array[i].location.x,
-    //     lng: array[i].location.y,
-    //   })
-    // }
-    // return points;
-    console.log(array)
-    let points = array.map(function () {
-      e =
-      console.log(i)
+  const points = ads.map(ad => ({
+    title: ad.offer.titles,
+    lat: ad.location.x,
+    lng: ad.location.y,
+  }));
 
-    })
-  }
-
-  const points = fillPoints(ads);
-  // console.log(ads)
   points.forEach(({lat, lng, title}) => {
     const icon = LEAFLET.icon({
       iconUrl: Icon.URL,
