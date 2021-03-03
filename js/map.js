@@ -1,7 +1,11 @@
 import {getAdsData, OFFERS_COUNT} from './data.js';
 import {FIELD_ADDRESS, enableForms} from './form.js';
+import {fillCard} from './ads.js';
 
 const ads = getAdsData(OFFERS_COUNT);
+const popupCard = fillCard(ads[1]);
+console.log(ads);
+console.log(popupCard);
 
 const DEFAULT_COORD = {
   lat: 35.68951,
@@ -67,7 +71,7 @@ function initMap() {
     lng: ad.location.y,
   }));
 
-  points.forEach(({lat, lng, title}) => {
+  points.forEach(({lat, lng}) => {
     const icon = LEAFLET.icon({
       iconUrl: Icon.URL,
       iconSize: Icon.SIZE,
@@ -85,7 +89,12 @@ function initMap() {
     );
 
     marker.addTo(map);
-    marker.bindPopup(title);
+    marker.bindPopup(
+      fillCard(ads),
+      {
+        keepInView: true,
+      },
+    );
   });
 
   mainMarker.on('move', (evt) => {
