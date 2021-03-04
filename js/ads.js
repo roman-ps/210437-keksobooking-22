@@ -37,9 +37,8 @@ const getHouseType = function(type) {
   return HOUSE_TYPES[type];
 };
 
-const renderFeatures = function(parent, features) {
+const prepareFeatures = function(parent, features) {
   let children = parent.querySelectorAll(POPUP_SELECTORS.feature);
-  let fragment = document.createDocumentFragment()
 
   children.forEach(function(child) {
     child.classList.add('hidden');
@@ -47,25 +46,23 @@ const renderFeatures = function(parent, features) {
       if (child.className.includes(feature)) {
         child.classList.remove('hidden');
       }
-      fragment.appendChild(child);
     })
   })
 
-  return fragment;
 };
 
 const renderPhotos = function(parent, photos) {
-  let img = parent.querySelector(POPUP_SELECTORS.photo);
-  let fragment = document.createDocumentFragment()
+  const imgElement = parent.querySelector(POPUP_SELECTORS.photo);
+  const img = imgElement.cloneNode(true);
+  const fragment = document.createDocumentFragment();
 
-  img.classList.add('hidden');
+  parent.removeChild(imgElement);
+
   photos.forEach(function(elem) {
     let newImg = img.cloneNode(true);
     newImg.setAttribute('src', elem);
-    newImg.classList.remove('hidden');
     fragment.appendChild(newImg);
   })
-  parent.removeChild(img);
 
   return fragment;
 };
@@ -86,7 +83,7 @@ const fillCard = function(cardData) {
   adNodes.type.textContent = getHouseType(cardData.offer.type);
   adNodes.capacity.textContent = getCapacityText(cardData.offer);
   adNodes.time.textContent = `Заезд после ${cardData.offer.checkin}, выезд до ${cardData.offer.checkout}`;
-  adNodes.features.appendChild(renderFeatures(adNodes.features, cardData.offer.features));
+  prepareFeatures(adNodes.features, cardData.offer.features);
   adNodes.description.textContent = cardData.offer.description;
   adNodes.photos.appendChild(renderPhotos(adNodes.photos, cardData.offer.photos));
   adNodes.avatar.src = cardData.author.avatar;

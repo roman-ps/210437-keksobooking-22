@@ -57,4 +57,8 @@ const enableForms = function() {
   enableFormFields(MAP_FILTERS, 'select');
 }
 
-export {addEventListeners, disableForms, FIELD_ADDRESS, enableForms}
+const setAddress = function({lat, lng}) {
+  FIELD_ADDRESS.value = `${lat}, ${lng}`;
+}
+
+export {addEventListeners, disableForms, FIELD_ADDRESS, setAddress, enableForms}
