@@ -1,16 +1,15 @@
 import {getAdsData, OFFERS_COUNT} from './data.js';
 import {FIELD_ADDRESS, enableForms} from './form.js';
 import {fillCard} from './ads.js';
+import {getRoundNumber} from './utils.js'
 
 const ads = getAdsData(OFFERS_COUNT);
-const popupCard = fillCard(ads[1]);
-console.log(ads);
-console.log(popupCard);
 
 const DEFAULT_COORD = {
   lat: 35.68951,
   lng: 139.69171,
 }
+
 const VIEW_MAP = 11;
 const DIGITS_COUNT = 5;
 const LEAFLET_TILE_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -90,7 +89,7 @@ function initMap() {
 
     marker.addTo(map);
     marker.bindPopup(
-      fillCard(ads),
+      fillCard(ads[0]),
       {
         keepInView: true,
       },
@@ -98,10 +97,9 @@ function initMap() {
   });
 
   mainMarker.on('move', (evt) => {
-    let degree =  Math.pow(10, DIGITS_COUNT);
     let x = evt.target.getLatLng().lat;
     let y = evt.target.getLatLng().lng;
-    FIELD_ADDRESS.value = `${Math.round(x * degree) / degree}, ${Math.round(y * degree) / degree}`;
+    FIELD_ADDRESS.value = `${getRoundNumber(x, DIGITS_COUNT)}, ${getRoundNumber(y, DIGITS_COUNT)}`;
   });
 }
 
