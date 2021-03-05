@@ -1,12 +1,9 @@
-import {getRoundNumber} from './utils.js'
-
 const DEFAULT_COORD = {
   lat: 35.68951,
   lng: 139.69171,
 }
 
 const VIEW_MAP = 11;
-const DIGITS_COUNT = 5;
 const LEAFLET_TILE_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const LEAFLET_ATTR = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 

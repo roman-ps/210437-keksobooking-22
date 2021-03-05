@@ -1,4 +1,5 @@
 import {getRoundNumber} from './utils.js';
+
 const FIELD_TYPE = document.querySelector('#type');
 const FIELD_PRICE = document.querySelector('#price');
 const FIELD_TIMEIN = document.querySelector('#timein');
