@@ -1,3 +1,4 @@
+import {getRoundNumber} from './utils.js';
 const FIELD_TYPE = document.querySelector('#type');
 const FIELD_PRICE = document.querySelector('#price');
 const FIELD_TIMEIN = document.querySelector('#timein');
@@ -58,7 +59,7 @@ const enableForms = function() {
 }
 
 const setAddress = function({lat, lng}) {
-  FIELD_ADDRESS.value = `${lat}, ${lng}`;
+  FIELD_ADDRESS.value = `${getRoundNumber(lat)}, ${getRoundNumber(lng)}`;
 }
 
-export {addEventListeners, disableForms, FIELD_ADDRESS, setAddress, enableForms}
+export {addEventListeners, disableForms, setAddress, enableForms}
