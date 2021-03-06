@@ -1,7 +1,12 @@
+import {getRoundNumber} from './utils.js';
+
 const FIELD_TYPE = document.querySelector('#type');
 const FIELD_PRICE = document.querySelector('#price');
 const FIELD_TIMEIN = document.querySelector('#timein');
 const FIELD_TIMEOUT = document.querySelector('#timeout');
+const AD_FORM = document.querySelector('.ad-form');
+const MAP_FILTERS = document.querySelector('.map__filters');
+const FIELD_ADDRESS = AD_FORM.querySelector('#address');
 
 const HOUSE_PRICE = {
   palace: 10000,
@@ -9,6 +14,18 @@ const HOUSE_PRICE = {
   house: 5000,
   bungalow: 0,
 };
+
+const disableFormFields = function(node, childFields, classNode = 'ad-form--disabled') {
+  node.classList.add(classNode);
+  let children = node.querySelectorAll(childFields);
+  children.forEach((elem) => elem.setAttribute('disabled', ''));
+}
+
+const enableFormFields = function(node, childFields, classNode = 'ad-form--disabled') {
+  node.classList.remove(classNode);
+  let children = node.querySelectorAll(childFields);
+  children.forEach((elem) => elem.removeAttribute('disabled'));
+}
 
 const fieldTypeChangeHandler = function(evt) {
   let value = evt.target.value;
@@ -32,4 +49,18 @@ const addEventListeners = function() {
   FIELD_TIMEOUT.addEventListener('change', fieldTimeoutChangeHandler);
 };
 
-export {addEventListeners}
+const disableForms = function() {
+  disableFormFields(AD_FORM, 'fieldset');
+  disableFormFields(MAP_FILTERS, 'select');
+}
+
+const enableForms = function() {
+  enableFormFields(AD_FORM, 'fieldset');
+  enableFormFields(MAP_FILTERS, 'select');
+}
+
+const setAddress = function({lat, lng}) {
+  FIELD_ADDRESS.value = `${getRoundNumber(lat)}, ${getRoundNumber(lng)}`;
+}
+
+export {addEventListeners, disableForms, setAddress, enableForms}

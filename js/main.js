@@ -1,11 +1,20 @@
-import {renderAds} from './ads.js';
-import {addEventListeners} from './form.js';
+import {getAdsData, OFFERS_COUNT} from './data.js';
+import {initMap} from './map.js';
+import {fillCard} from './ads.js';
+import {addEventListeners, disableForms, enableForms, setAddress} from './form.js';
 
-const MAP_CANVAS = document.querySelector('#map-canvas');
-MAP_CANVAS.appendChild(renderAds.firstElementChild);
+const ads = getAdsData(OFFERS_COUNT);
+
+const points = ads.map(ad => ({
+  title: ad.offer.titles,
+  lat: ad.location.x,
+  lng: ad.location.y,
+}));
+
+const renderAd = function(idx) {
+  return fillCard(ads[idx]);
+}
 
 addEventListeners();
-
-/* eslint-disable no-console*/
-console.log(renderAds);
-/* eslint-enable no-console*/
+disableForms();
+initMap(points, enableForms, renderAd, setAddress);
