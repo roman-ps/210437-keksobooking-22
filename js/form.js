@@ -7,6 +7,8 @@ const FIELD_TIMEOUT = document.querySelector('#timeout');
 const AD_FORM = document.querySelector('.ad-form');
 const MAP_FILTERS = document.querySelector('.map__filters');
 const FIELD_ADDRESS = AD_FORM.querySelector('#address');
+const FIELD_ROOM_NUMBER = document.querySelector('#room_number');
+const FIELD_CAPACITY = document.querySelector('#capacity');
 
 const HOUSE_PRICE = {
   palace: 10000,
@@ -15,17 +17,44 @@ const HOUSE_PRICE = {
   bungalow: 0,
 };
 
+const ROOMS_VALUES = {
+  1: ['1'],
+  2: ['1', '2'],
+  3: ['1', '2', '3'],
+  100: ['0'],
+};
+
+const fieldRoomNumberChangeHandler = function(evt) {
+  let value = evt.target.value;
+  let options = FIELD_CAPACITY.querySelectorAll('option');
+  options.forEach(function (elem) {
+    changeAttribute(elem, 'selected', 'disabled')
+    // elem.removeAttribute('selected');
+    // elem.setAttribute('disabled', '');
+    if (ROOMS_VALUES[value].includes(elem.value)) {
+      changeAttribute(elem, 'disabled', 'selected')
+      // elem.removeAttribute('disabled');
+      // elem.setAttribute('selected', '');
+    }
+  })
+};
+
+const changeAttribute = function(elem, attr1, attr2) {
+  elem.removeAttribute(attr1);
+  elem.setAttribute(attr2, '');
+}
+
 const disableFormFields = function(node, childFields, classNode = 'ad-form--disabled') {
   node.classList.add(classNode);
   let children = node.querySelectorAll(childFields);
   children.forEach((elem) => elem.setAttribute('disabled', ''));
-}
+};
 
 const enableFormFields = function(node, childFields, classNode = 'ad-form--disabled') {
   node.classList.remove(classNode);
   let children = node.querySelectorAll(childFields);
   children.forEach((elem) => elem.removeAttribute('disabled'));
-}
+};
 
 const fieldTypeChangeHandler = function(evt) {
   let value = evt.target.value;
@@ -47,6 +76,7 @@ const addEventListeners = function() {
   FIELD_TYPE.addEventListener('change', fieldTypeChangeHandler);
   FIELD_TIMEIN.addEventListener('change', fieldTimeinChangeHandler);
   FIELD_TIMEOUT.addEventListener('change', fieldTimeoutChangeHandler);
+  FIELD_ROOM_NUMBER.addEventListener('change', fieldRoomNumberChangeHandler);
 };
 
 const disableForms = function() {
