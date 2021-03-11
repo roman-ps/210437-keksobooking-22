@@ -28,13 +28,9 @@ const fieldRoomNumberChangeHandler = function(evt) {
   let value = evt.target.value;
   let options = FIELD_CAPACITY.querySelectorAll('option');
   options.forEach(function (elem) {
-    changeAttribute(elem, 'selected', 'disabled')
-    // elem.removeAttribute('selected');
-    // elem.setAttribute('disabled', '');
+    changeAttribute(elem, 'selected', 'disabled');
     if (ROOMS_VALUES[value].includes(elem.value)) {
-      changeAttribute(elem, 'disabled', 'selected')
-      // elem.removeAttribute('disabled');
-      // elem.setAttribute('selected', '');
+      changeAttribute(elem, 'disabled', 'selected');
     }
   })
 };
@@ -42,7 +38,7 @@ const fieldRoomNumberChangeHandler = function(evt) {
 const changeAttribute = function(elem, attr1, attr2) {
   elem.removeAttribute(attr1);
   elem.setAttribute(attr2, '');
-}
+};
 
 const disableFormFields = function(node, childFields, classNode = 'ad-form--disabled') {
   node.classList.add(classNode);
@@ -82,15 +78,15 @@ const addEventListeners = function() {
 const disableForms = function() {
   disableFormFields(AD_FORM, 'fieldset');
   disableFormFields(MAP_FILTERS, 'select');
-}
+};
 
 const enableForms = function() {
   enableFormFields(AD_FORM, 'fieldset');
   enableFormFields(MAP_FILTERS, 'select');
-}
+};
 
 const setAddress = function({lat, lng}) {
   FIELD_ADDRESS.value = `${getRoundNumber(lat)}, ${getRoundNumber(lng)}`;
-}
+};
 
 export {addEventListeners, disableForms, setAddress, enableForms}
