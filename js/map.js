@@ -3,7 +3,7 @@ const DEFAULT_COORD = {
   lng: 139.69171,
 }
 
-const VIEW_MAP = 11;
+const VIEW_MAP = 10;
 const LEAFLET_TILE_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const LEAFLET_ATTR = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
