@@ -1,3 +1,4 @@
+import {sendData} from './api.js';
 import {getRoundNumber} from './utils.js';
 
 const FIELD_TYPE = document.querySelector('#type');
@@ -68,11 +69,17 @@ const fieldTimeoutChangeHandler = function(evt) {
   FIELD_TIMEIN.value = currentValue;
 };
 
+const submitFormHandler = function(evt) {
+  evt.preventDefault();
+  sendData(AD_FORM);
+}
+
 const addEventListeners = function() {
   FIELD_TYPE.addEventListener('change', fieldTypeChangeHandler);
   FIELD_TIMEIN.addEventListener('change', fieldTimeinChangeHandler);
   FIELD_TIMEOUT.addEventListener('change', fieldTimeoutChangeHandler);
   FIELD_ROOM_NUMBER.addEventListener('change', fieldRoomNumberChangeHandler);
+  AD_FORM.addEventListener('submit', submitFormHandler);
 };
 
 const disableForms = function() {
