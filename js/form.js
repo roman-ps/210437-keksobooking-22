@@ -1,4 +1,5 @@
 import {sendData} from './api.js';
+import {openPopup, closePopup} from './popup.js';
 import {getRoundNumber} from './utils.js';
 
 const FIELD_TYPE = document.querySelector('#type');

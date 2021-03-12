@@ -12,7 +12,7 @@ const getData = function() {
     })
 
     .catch((err) => {
-      console.error(err)
+      console.error(err);
     })
 };
 
@@ -34,7 +34,7 @@ const sendData = function(form) {
     })
 
     .catch((err) => {
-      console.error(err)
+      console.error(err);
     })
 };
 
