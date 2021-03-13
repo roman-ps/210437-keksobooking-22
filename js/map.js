@@ -68,4 +68,4 @@ function initMap(points, onLoad, onClick, onPinMove) {
   mainMarker.on('move', mainPinMoveHandler);
 }
 
-export {initMap}
+export {initMap, DEFAULT_COORD}

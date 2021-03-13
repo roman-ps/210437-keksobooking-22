@@ -12,10 +12,11 @@ getData()
       lat: ad.location.lat,
       lng: ad.location.lng,
     }));
-    const renderAd = function(idx) {
 
+    const renderAd = function(idx) {
       return fillCard(data[idx]);
     };
+    
     initMap(points, enableForms, renderAd, setAddress);
     addEventListeners();
   })

@@ -1,16 +1,21 @@
 import {sendData} from './api.js';
-import {openPopup, closePopup} from './popup.js';
+import {openPopup} from './popup.js';
 import {getRoundNumber} from './utils.js';
+import {DEFAULT_COORD} from './map.js';
 
 const FIELD_TYPE = document.querySelector('#type');
 const FIELD_PRICE = document.querySelector('#price');
 const FIELD_TIMEIN = document.querySelector('#timein');
 const FIELD_TIMEOUT = document.querySelector('#timeout');
 const AD_FORM = document.querySelector('.ad-form');
+const AD_FORM_RESET = document.querySelector('.ad-form__reset');
 const MAP_FILTERS = document.querySelector('.map__filters');
 const FIELD_ADDRESS = AD_FORM.querySelector('#address');
 const FIELD_ROOM_NUMBER = document.querySelector('#room_number');
 const FIELD_CAPACITY = document.querySelector('#capacity');
+const POPUP_SUCCESS_TEMPLATE = document.querySelector('#success');
+// const POPUP_ERROR_TEMPLATE = document.querySelector('#error');
+const MAIN_BLOCK = document.querySelector('main');
 
 const HOUSE_PRICE = {
   palace: 10000,
@@ -72,7 +77,18 @@ const fieldTimeoutChangeHandler = function(evt) {
 
 const submitFormHandler = function(evt) {
   evt.preventDefault();
-  sendData(AD_FORM);
+  const formData = new FormData(evt.target);
+  sendData(formData);
+  openPopup(POPUP_SUCCESS_TEMPLATE, MAIN_BLOCK);
+  // openPopup(POPUP_ERROR_TEMPLATE, MAIN_BLOCK);
+  AD_FORM.reset();
+  setAddress(DEFAULT_COORD);
+};
+
+const resetFormHandler = function(evt) {
+  evt.preventDefault();
+  AD_FORM.reset();
+  setAddress(DEFAULT_COORD);
 }
 
 const addEventListeners = function() {
@@ -81,6 +97,8 @@ const addEventListeners = function() {
   FIELD_TIMEOUT.addEventListener('change', fieldTimeoutChangeHandler);
   FIELD_ROOM_NUMBER.addEventListener('change', fieldRoomNumberChangeHandler);
   AD_FORM.addEventListener('submit', submitFormHandler);
+  // AD_FORM.addEventListener('reset', resetFormHandler);
+  AD_FORM_RESET.addEventListener('click', resetFormHandler);
 };
 
 const disableForms = function() {

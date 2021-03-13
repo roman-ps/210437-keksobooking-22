@@ -10,10 +10,6 @@ const getData = function() {
 
       throw new Error(`${response.status} ${response.statusText}`);
     })
-
-    .catch((err) => {
-      console.error(err);
-    })
 };
 
 const sendData = function(form) {
@@ -21,20 +17,15 @@ const sendData = function(form) {
     SETDATA_URL,
     {
       method: 'POST',
-      body: new FormData(form),
+      body: form,
     },
   )
     .then((response) => {
       if (response.ok) {
-        console.log('Data send');
         return response.json();
       }
 
       throw new Error(`${response.status} ${response.statusText}`);
-    })
-
-    .catch((err) => {
-      console.error(err);
     })
 };
 
