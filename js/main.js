@@ -1,6 +1,6 @@
 import {initMap} from './map.js';
 import {fillCard} from './ads.js';
-import {addEventListeners, disableForms, enableForms, setAddress} from './form.js';
+import {disableForms, enableForms, setAddress} from './form.js';
 import {getData} from './api.js'
 
 disableForms();
@@ -16,7 +16,6 @@ getData()
     const renderAd = function(idx) {
       return fillCard(data[idx]);
     };
-    
+
     initMap(points, enableForms, renderAd, setAddress);
-    addEventListeners();
   })
