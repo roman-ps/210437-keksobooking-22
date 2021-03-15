@@ -13,9 +13,9 @@ const onPopupClick = function() {
   closePopup(MAIN_BLOCK);
 }
 
-const openPopup = function(node, parent) {
+const openPopup = function(node, parent, className = '.success') {
   const cloneElement = node.content.cloneNode(true);
-  const popup = cloneElement.querySelector('.success');
+  const popup = cloneElement.querySelector(className);
   popup.style.zIndex = 10000;
   parent.appendChild(popup);
   document.addEventListener('keydown', onPopupEscKeydown);

@@ -18,7 +18,7 @@ const FieldNodes = {
   CAPACITY: AD_FORM.querySelector('#capacity'),
 }
 const POPUP_SUCCESS_TEMPLATE = document.querySelector('#success');
-// const POPUP_ERROR_TEMPLATE = document.querySelector('#error');
+const POPUP_ERROR_TEMPLATE = document.querySelector('#error');
 
 const HOUSE_PRICE = {
   palace: 10000,
@@ -78,21 +78,27 @@ const fieldTimeoutChangeHandler = function(evt) {
   FieldNodes.TIMEIN.value = currentValue;
 };
 
-const submitFormHandler = function(evt) {
-  evt.preventDefault();
-  const formData = new FormData(evt.target);
-  sendData(formData);
-  openPopup(POPUP_SUCCESS_TEMPLATE, MAIN_BLOCK);
-  // openPopup(POPUP_ERROR_TEMPLATE, MAIN_BLOCK);
-  AD_FORM.reset();
-  setAddress(DEFAULT_COORD);
-};
-
 const resetFormHandler = function(evt) {
   evt.preventDefault();
   AD_FORM.reset();
   setAddress(DEFAULT_COORD);
 }
+
+const submitFormHandler = function(evt) {
+  evt.preventDefault();
+
+  const formData = new FormData(evt.target);
+  const dataPromise = sendData(formData);
+
+  dataPromise
+    .then(() => {
+      openPopup(POPUP_SUCCESS_TEMPLATE, MAIN_BLOCK);
+      resetFormHandler(evt);
+    })
+    .catch(() => {
+      openPopup(POPUP_ERROR_TEMPLATE, MAIN_BLOCK, '.error');
+    });
+};
 
 const addEventListeners = function() {
   const {TYPE, TIMEIN, TIMEOUT, ROOM_NUMBER} = FieldNodes;
