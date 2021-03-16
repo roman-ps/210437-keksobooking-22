@@ -1,20 +1,45 @@
-import {getAdsData, OFFERS_COUNT} from './data.js';
-import {initMap} from './map.js';
+import {initMap, addPins} from './map.js';
 import {fillCard} from './ads.js';
-import {addEventListeners, disableForms, enableForms, setAddress} from './form.js';
+import {disableForms, enableForms, setAddress} from './form.js';
+import {getData} from './api.js'
 
-const ads = getAdsData(OFFERS_COUNT);
+const adaptPoints = (ad) => ({
+  title: ad.offer.title,
+  lat: ad.location.lat,
+  lng: ad.location.lng,
+});
 
-const points = ads.map(ad => ({
-  title: ad.offer.titles,
-  lat: ad.location.x,
-  lng: ad.location.y,
-}));
+const handleDataSuccess = (data) => {
+  const points = data.map(adaptPoints);
+  const renderAd = (idx) => fillCard(data[idx]);
 
-const renderAd = function(idx) {
-  return fillCard(ads[idx]);
-}
+  addPins(points, renderAd);
+};
 
-addEventListeners();
+const handleDataError = (message) => {
+  const alertContainer = document.createElement('div');
+  alertContainer.style.zIndex = 100;
+  alertContainer.style.position = 'absolute';
+  alertContainer.style.left = 0;
+  alertContainer.style.top = 0;
+  alertContainer.style.right = 0;
+  alertContainer.style.padding = '10px 3px';
+  alertContainer.style.fontSize = '22px';
+  alertContainer.style.textAlign = 'center';
+  alertContainer.style.backgroundColor = 'red';
+  alertContainer.textContent = message;
+
+  document.body.append(alertContainer);
+
+  setTimeout(() => {
+    alertContainer.remove();
+  }, 3000);
+};
+
 disableForms();
-initMap(points, enableForms, renderAd, setAddress);
+initMap(enableForms, setAddress);
+const dataPromise = getData();
+
+dataPromise
+  .then(handleDataSuccess)
+  .catch(handleDataError('Данные не загрузились'))

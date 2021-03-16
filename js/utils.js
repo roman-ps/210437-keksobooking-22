@@ -34,15 +34,19 @@ const getNodes = function(selectors, parent) {
   }
 
   return nodes;
-}
+};
 
 const pluralize = function(n, variants) {
   return variants[[(n % 10 === 1 && n % 100 !== 11) ? 0 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2]];
-}
+};
 
 const getRoundNumber = function(number, digits = 5) {
   let degree =  Math.pow(10, digits);
   return Math.round(number * degree) / degree;
-}
+};
 
-export {getRandomNumber, getRandomElement, getRandomArrayList, getNodes, pluralize, getRoundNumber};
+const isEscEvent = function(evt) {
+  return evt.key === 'Escape' || evt.key === 'Esc';
+};
+
+export {getRandomNumber, getRandomElement, getRandomArrayList, getNodes, pluralize, getRoundNumber, isEscEvent};

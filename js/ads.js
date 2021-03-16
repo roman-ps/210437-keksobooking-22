@@ -1,5 +1,5 @@
 import {HOUSE_TYPES} from './data.js';
-import {getNodes, pluralize} from './utils.js';
+import {getRoundNumber, getNodes, pluralize} from './utils.js';
 
 const CARD_TEMPLATE = document.querySelector('#card');
 
@@ -70,7 +70,12 @@ const renderPhotos = function(parent, photos) {
 const getCapacityText = function(offer) {
   const rooms = pluralize(offer.rooms, ROOMS_OPTIONS);
   const guests = pluralize(offer.rooms, GUESTS_OPTIONS);
+
   return `${offer.rooms} ${rooms} для ${offer.guests} ${guests}`;
+}
+
+const getAddressCoords = function({lat, lng}) {
+  return `${getRoundNumber(lat)}, ${getRoundNumber(lng)}`;
 }
 
 const fillCard = function(cardData) {
@@ -78,7 +83,7 @@ const fillCard = function(cardData) {
   const adNodes = getNodes(SELECTORS, ad);
 
   adNodes.title.textContent = cardData.offer.titles;
-  adNodes.address.textContent = `${cardData.offer.address.x}, ${cardData.offer.address.y}`;
+  adNodes.address.textContent = getAddressCoords(cardData.location);
   adNodes.price.innerHTML = `${cardData.offer.price} <span>₽/ночь</span>`;
   adNodes.type.textContent = getHouseType(cardData.offer.type);
   adNodes.capacity.textContent = getCapacityText(cardData.offer);

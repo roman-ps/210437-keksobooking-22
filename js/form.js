@@ -1,14 +1,24 @@
+import {sendData} from './api.js';
+import {openPopup} from './popup.js';
 import {getRoundNumber} from './utils.js';
+import {DEFAULT_COORD} from './map.js';
 
-const FIELD_TYPE = document.querySelector('#type');
-const FIELD_PRICE = document.querySelector('#price');
-const FIELD_TIMEIN = document.querySelector('#timein');
-const FIELD_TIMEOUT = document.querySelector('#timeout');
 const AD_FORM = document.querySelector('.ad-form');
+const AD_FORM_RESET = document.querySelector('.ad-form__reset');
 const MAP_FILTERS = document.querySelector('.map__filters');
-const FIELD_ADDRESS = AD_FORM.querySelector('#address');
-const FIELD_ROOM_NUMBER = document.querySelector('#room_number');
-const FIELD_CAPACITY = document.querySelector('#capacity');
+const MAIN_BLOCK = document.querySelector('main');
+
+const FieldNodes = {
+  TYPE: AD_FORM.querySelector('#type'),
+  PRICE: AD_FORM.querySelector('#price'),
+  TIMEIN: AD_FORM.querySelector('#timein'),
+  TIMEOUT: AD_FORM.querySelector('#timeout'),
+  ADDRESS: AD_FORM.querySelector('#address'),
+  ROOM_NUMBER: AD_FORM.querySelector('#room_number'),
+  CAPACITY: AD_FORM.querySelector('#capacity'),
+}
+const POPUP_SUCCESS_TEMPLATE = document.querySelector('#success');
+const POPUP_ERROR_TEMPLATE = document.querySelector('#error');
 
 const HOUSE_PRICE = {
   palace: 10000,
@@ -26,15 +36,11 @@ const ROOMS_VALUES = {
 
 const fieldRoomNumberChangeHandler = function(evt) {
   let value = evt.target.value;
-  let options = FIELD_CAPACITY.querySelectorAll('option');
+  let options = FieldNodes.CAPACITY.querySelectorAll('option');
   options.forEach(function (elem) {
-    changeAttribute(elem, 'selected', 'disabled')
-    // elem.removeAttribute('selected');
-    // elem.setAttribute('disabled', '');
+    changeAttribute(elem, 'selected', 'disabled');
     if (ROOMS_VALUES[value].includes(elem.value)) {
-      changeAttribute(elem, 'disabled', 'selected')
-      // elem.removeAttribute('disabled');
-      // elem.setAttribute('selected', '');
+      changeAttribute(elem, 'disabled', 'selected');
     }
   })
 };
@@ -42,7 +48,7 @@ const fieldRoomNumberChangeHandler = function(evt) {
 const changeAttribute = function(elem, attr1, attr2) {
   elem.removeAttribute(attr1);
   elem.setAttribute(attr2, '');
-}
+};
 
 const disableFormFields = function(node, childFields, classNode = 'ad-form--disabled') {
   node.classList.add(classNode);
@@ -58,39 +64,78 @@ const enableFormFields = function(node, childFields, classNode = 'ad-form--disab
 
 const fieldTypeChangeHandler = function(evt) {
   let value = evt.target.value;
-  FIELD_PRICE.setAttribute('placeholder', HOUSE_PRICE[value]);
-  FIELD_PRICE.setAttribute('min', HOUSE_PRICE[value]);
+  FieldNodes.PRICE.setAttribute('placeholder', HOUSE_PRICE[value]);
+  FieldNodes.PRICE.setAttribute('min', HOUSE_PRICE[value]);
 };
 
 const fieldTimeinChangeHandler = function(evt) {
   let currentValue = evt.target.value;
-  FIELD_TIMEOUT.value = currentValue;
+  FieldNodes.TIMEOUT.value = currentValue;
 };
 
 const fieldTimeoutChangeHandler = function(evt) {
   let currentValue = evt.target.value;
-  FIELD_TIMEIN.value = currentValue;
+  FieldNodes.TIMEIN.value = currentValue;
+};
+
+const resetFormHandler = function(evt) {
+  evt.preventDefault();
+  AD_FORM.reset();
+  setAddress(DEFAULT_COORD);
+}
+
+const submitFormHandler = function(evt) {
+  evt.preventDefault();
+
+  const formData = new FormData(evt.target);
+  const dataPromise = sendData(formData);
+
+  dataPromise
+    .then(() => {
+      openPopup(POPUP_SUCCESS_TEMPLATE, MAIN_BLOCK);
+      resetFormHandler(evt);
+    })
+    .catch(() => {
+      openPopup(POPUP_ERROR_TEMPLATE, MAIN_BLOCK, '.error');
+    });
 };
 
 const addEventListeners = function() {
-  FIELD_TYPE.addEventListener('change', fieldTypeChangeHandler);
-  FIELD_TIMEIN.addEventListener('change', fieldTimeinChangeHandler);
-  FIELD_TIMEOUT.addEventListener('change', fieldTimeoutChangeHandler);
-  FIELD_ROOM_NUMBER.addEventListener('change', fieldRoomNumberChangeHandler);
+  const {TYPE, TIMEIN, TIMEOUT, ROOM_NUMBER} = FieldNodes;
+
+  TYPE.addEventListener('change', fieldTypeChangeHandler);
+  TIMEIN.addEventListener('change', fieldTimeinChangeHandler);
+  TIMEOUT.addEventListener('change', fieldTimeoutChangeHandler);
+  ROOM_NUMBER.addEventListener('change', fieldRoomNumberChangeHandler);
+  AD_FORM.addEventListener('submit', submitFormHandler);
+  AD_FORM_RESET.addEventListener('click', resetFormHandler);
+};
+
+const removeEventListeners = function() {
+  const {TYPE, TIMEIN, TIMEOUT, ROOM_NUMBER} = FieldNodes;
+
+  TYPE.removeEventListener('change', fieldTypeChangeHandler);
+  TIMEIN.removeEventListener('change', fieldTimeinChangeHandler);
+  TIMEOUT.removeEventListener('change', fieldTimeoutChangeHandler);
+  ROOM_NUMBER.removeEventListener('change', fieldRoomNumberChangeHandler);
+  AD_FORM.removeEventListener('submit', submitFormHandler);
+  AD_FORM_RESET.removeEventListener('click', resetFormHandler);
 };
 
 const disableForms = function() {
   disableFormFields(AD_FORM, 'fieldset');
   disableFormFields(MAP_FILTERS, 'select');
-}
+  removeEventListeners();
+};
 
 const enableForms = function() {
   enableFormFields(AD_FORM, 'fieldset');
   enableFormFields(MAP_FILTERS, 'select');
-}
+  addEventListeners();
+};
 
 const setAddress = function({lat, lng}) {
-  FIELD_ADDRESS.value = `${getRoundNumber(lat)}, ${getRoundNumber(lng)}`;
-}
+  FieldNodes.ADDRESS.value = `${getRoundNumber(lat)}, ${getRoundNumber(lng)}`;
+};
 
-export {addEventListeners, disableForms, setAddress, enableForms}
+export {disableForms, setAddress, enableForms}
