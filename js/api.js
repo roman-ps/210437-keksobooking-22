@@ -1,7 +1,7 @@
 const GETDATA_URL = 'https://22.javascript.pages.academy/keksobooking/data';
 const SETDATA_URL = 'https://22.javascript.pages.academy/keksobooking';
 
-const getData = function() {
+const loadData = function() {
   return fetch(GETDATA_URL)
     .then((response) => {
       if (response.ok) {
@@ -29,4 +29,4 @@ const sendData = function(form) {
     })
 };
 
-export {getData, sendData}
+export {loadData, sendData}

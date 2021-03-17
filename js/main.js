@@ -1,7 +1,7 @@
 import {initMap, addPins} from './map.js';
 import {fillCard} from './ads.js';
 import {disableForms, enableForms, setAddress} from './form.js';
-import {getData} from './api.js'
+import {loadData} from './api.js'
 
 const adaptPoints = (ad) => ({
   title: ad.offer.title,
@@ -16,19 +16,11 @@ const handleDataSuccess = (data) => {
   addPins(points, renderAd);
 };
 
-const handleDataError = (message) => {
+const handleDataError = () => {
   const alertContainer = document.createElement('div');
-  alertContainer.style.zIndex = 100;
-  alertContainer.style.position = 'absolute';
-  alertContainer.style.left = 0;
-  alertContainer.style.top = 0;
-  alertContainer.style.right = 0;
-  alertContainer.style.padding = '10px 3px';
-  alertContainer.style.fontSize = '22px';
-  alertContainer.style.textAlign = 'center';
-  alertContainer.style.backgroundColor = 'red';
+  alertContainer.classList.add('alert');
+  const message = 'Данные не загрузились';
   alertContainer.textContent = message;
-
   document.body.append(alertContainer);
 
   setTimeout(() => {
@@ -38,8 +30,8 @@ const handleDataError = (message) => {
 
 disableForms();
 initMap(enableForms, setAddress);
-const dataPromise = getData();
+const dataPromise = loadData();
 
 dataPromise
   .then(handleDataSuccess)
-  .catch(handleDataError('Данные не загрузились'))
+  .catch(handleDataError)
