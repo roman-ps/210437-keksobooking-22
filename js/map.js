@@ -22,6 +22,13 @@ const ICON = {
 // eslint-disable-next-line
 const LEAFLET = L;
 const MAP = LEAFLET.map('map-canvas');
+let MARKERS = [];
+
+const removePins = () => {
+  MARKERS.forEach((marker) => {
+    marker.remove();
+  })
+};
 
 /**
  * 1 рендер пинов
@@ -30,6 +37,7 @@ const MAP = LEAFLET.map('map-canvas');
  * @param {*} onClick - обработчик клика по пину
  */
 const addPins = (points, onClick) => {
+
   const addPin = ({lat, lng}, idx) => {
     const icon = LEAFLET.icon(ICON);
     const marker = LEAFLET.marker({lat, lng}, {icon});
@@ -39,6 +47,7 @@ const addPins = (points, onClick) => {
       {keepInView: true},
     );
     marker.addTo(MAP);
+    MARKERS.push(marker);
   };
 
   points.forEach(addPin);
@@ -85,4 +94,4 @@ function initMap(onLoad, onPinMove) {
   mainMarker.on('move', mainPinMoveHandler);
 }
 
-export {initMap, DEFAULT_COORD, addPins}
+export {initMap, DEFAULT_COORD, addPins, removePins}

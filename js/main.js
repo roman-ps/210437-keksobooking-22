@@ -1,7 +1,9 @@
-import {initMap, addPins} from './map.js';
+import {initMap, addPins, removePins} from './map.js';
 import {fillCard} from './ads.js';
+import {storeData, getData} from './store.js';
 import {disableForms, enableForms, setAddress} from './form.js';
-import {loadData} from './api.js'
+import {loadData} from './api.js';
+import {changeHouseTypeHandle} from './filter.js';
 
 const adaptPoints = (ad) => ({
   title: ad.offer.title,
@@ -9,11 +11,18 @@ const adaptPoints = (ad) => ({
   lng: ad.location.lng,
 });
 
-const handleDataSuccess = (data) => {
+const renderPins = (data) => {
   const points = data.map(adaptPoints);
   const renderAd = (idx) => fillCard(data[idx]);
 
+  removePins();
   addPins(points, renderAd);
+};
+
+const handleDataSuccess = (rawData) => {
+  storeData(rawData);
+  const data = getData();
+  renderPins(data);
 };
 
 const handleDataError = () => {
@@ -28,10 +37,13 @@ const handleDataError = () => {
   }, 3000);
 };
 
-disableForms();
-initMap(enableForms, setAddress);
-const dataPromise = loadData();
+const handleMapLoadSuccess = () => {
+  enableForms();
 
-dataPromise
-  .then(handleDataSuccess)
-  .catch(handleDataError)
+  loadData()
+    .then(handleDataSuccess)
+    .catch(handleDataError)
+}
+
+disableForms();
+initMap(handleMapLoadSuccess, setAddress);
