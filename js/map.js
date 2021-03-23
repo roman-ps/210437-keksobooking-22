@@ -1,7 +1,7 @@
 const DEFAULT_COORD = {
   lat: 35.68951,
   lng: 139.69171,
-}
+};
 
 const VIEW_MAP = 10;
 const LEAFLET_TILE_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -51,7 +51,7 @@ const addPins = (points, onClick) => {
   };
 
   points.forEach(addPin);
-}
+};
 
 /**
  * Инициализация карты

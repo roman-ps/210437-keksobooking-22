@@ -1,31 +1,39 @@
 let rawData = null;
 let preparedData = null;
 
-const MAX_PIN_COUNT = 10;
+const MAX_PIN = 10;
 
 /**
- * Возвращает первые MAX_PIN_COUNT элементы массива data
- * @param {*} data - массив
+ * Возвращает первые MAX_PIN_COUNT из массива data
+ * @param {*} data
  */
-const sliceMaxCount = (data) => data.slice(0, MAX_PIN_COUNT);
+const sliceCounts = (data) => data.slice(0, MAX_PIN);
 
 /**
  * Подготавливает сырые данные
  * Сохраняет результат в preparedData
- * @param {*} filterData - ф-ия которая умеет фильтровать данные, по умол sliceMaxCount
+ * @param {*} filterData - ф-ия фильтр
  */
-const prepareData = (filterData = sliceMaxCount) => {
+const prepareData = (filterData) => {
   if (!rawData) {
     throw new Error('Ошибка вызова данных!');
   }
 
-  preparedData = filterData(rawData);
+  let data = rawData;
+
+  if (typeof filterData === 'function') {
+    data = data.filter(filterData);
+  }
+  if (data.length > MAX_PIN) {
+    data = sliceCounts(data);
+  }
+  preparedData = data;
 };
 
 const getData = () => preparedData;
 
 /**
- * Сохраняет в замыкание модуля сырые данные
+ * Сохраняет сырые данные
  * Вызывает prepareData с дефолтными настройками
  * @param {*} data
  */

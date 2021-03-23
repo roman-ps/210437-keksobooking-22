@@ -16,7 +16,8 @@ const FieldNodes = {
   ADDRESS: AD_FORM.querySelector('#address'),
   ROOM_NUMBER: AD_FORM.querySelector('#room_number'),
   CAPACITY: AD_FORM.querySelector('#capacity'),
-}
+};
+
 const POPUP_SUCCESS_TEMPLATE = document.querySelector('#success');
 const POPUP_ERROR_TEMPLATE = document.querySelector('#error');
 
@@ -82,7 +83,7 @@ const resetFormHandler = function(evt) {
   evt.preventDefault();
   AD_FORM.reset();
   setAddress(DEFAULT_COORD);
-}
+};
 
 const submitFormHandler = function(evt) {
   evt.preventDefault();
@@ -97,8 +98,22 @@ const submitFormHandler = function(evt) {
     })
     .catch(() => {
       openPopup(POPUP_ERROR_TEMPLATE, MAIN_BLOCK, '.error');
-    });
+    })
 };
+
+const getHandleFilterChange = (setSelect, setCheckbox) => (evt) => {
+  const field = evt.target;
+  if (field.tagName === 'SELECT') {
+    setSelect(field.id, field.value);
+    return;
+  }
+  if (field.tagName === 'INPUT') {
+    setCheckbox(field.id, field.checked);
+    return;
+  }
+};
+
+let handleFilterChange;
 
 const addEventListeners = function() {
   const {TYPE, TIMEIN, TIMEOUT, ROOM_NUMBER} = FieldNodes;
@@ -126,9 +141,13 @@ const disableForms = function() {
   disableFormFields(AD_FORM, 'fieldset');
   disableFormFields(MAP_FILTERS, 'select');
   removeEventListeners();
+  MAP_FILTERS.removeEventListener('change', handleFilterChange);
+  handleFilterChange = null;
 };
 
-const enableForms = function() {
+const enableForms = function(setSelect, setCheckbox) {
+  handleFilterChange = getHandleFilterChange(setSelect, setCheckbox);
+  MAP_FILTERS.addEventListener('change', handleFilterChange);
   enableFormFields(AD_FORM, 'fieldset');
   enableFormFields(MAP_FILTERS, 'select');
   addEventListeners();

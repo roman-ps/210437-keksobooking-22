@@ -25,13 +25,13 @@ const ROOMS_OPTIONS = [
   'комната',
   'комнаты',
   'комнат',
-]
+];
 
 const GUESTS_OPTIONS = [
   'гостя',
   'гостей',
   'гостей',
-]
+];
 
 const getHouseType = function(type) {
   return HOUSE_TYPES[type];
@@ -72,11 +72,11 @@ const getCapacityText = function(offer) {
   const guests = pluralize(offer.rooms, GUESTS_OPTIONS);
 
   return `${offer.rooms} ${rooms} для ${offer.guests} ${guests}`;
-}
+};
 
 const getAddressCoords = function({lat, lng}) {
   return `${getRoundNumber(lat)}, ${getRoundNumber(lng)}`;
-}
+};
 
 const fillCard = function(cardData) {
   const ad = CARD_TEMPLATE.content.cloneNode(true);
@@ -94,6 +94,6 @@ const fillCard = function(cardData) {
   adNodes.avatar.src = cardData.author.avatar;
 
   return ad;
-}
+};
 
 export {fillCard};

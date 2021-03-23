@@ -1,9 +1,11 @@
 import {initMap, addPins, removePins} from './map.js';
 import {fillCard} from './ads.js';
-import {storeData, getData} from './store.js';
+import {storeData, getData, prepareData} from './store.js';
 import {disableForms, enableForms, setAddress} from './form.js';
 import {loadData} from './api.js';
-import {changeHouseTypeHandle} from './filter.js';
+import {setFieldValue, setCheckboxValue, checkData} from './filter.js';
+
+const RENDER_TIMEOUT = 500;
 
 const adaptPoints = (ad) => ({
   title: ad.offer.title,
@@ -19,10 +21,22 @@ const renderPins = (data) => {
   addPins(points, renderAd);
 };
 
+const updatePins = () => {
+  prepareData(checkData);
+  removePins();
+  renderPins(getData());
+};
+
+// TODO заменить заглушку на реальный debounce
+const debounce = (cb) => () => {
+  cb();
+};
+
+const updatePinsDebounced = debounce(updatePins, RENDER_TIMEOUT);
+
 const handleDataSuccess = (rawData) => {
   storeData(rawData);
-  const data = getData();
-  renderPins(data);
+  renderPins(getData());
 };
 
 const handleDataError = () => {
@@ -32,18 +46,26 @@ const handleDataError = () => {
   alertContainer.textContent = message;
   document.body.append(alertContainer);
 
-  setTimeout(() => {
-    alertContainer.remove();
-  }, 3000);
+  setTimeout(alertContainer.remove, 3000);
 };
 
-const handleMapLoadSuccess = () => {
-  enableForms();
+const handleMapLoaded = () => {
+  enableForms(handleSelectChange, handleCheckboxChange);
 
   loadData()
     .then(handleDataSuccess)
     .catch(handleDataError)
-}
+};
+
+const handleSelectChange = (...args) => {
+  setFieldValue(...args);
+  updatePinsDebounced();
+};
+
+const handleCheckboxChange = (...args) => {
+  setCheckboxValue(...args);
+  updatePinsDebounced();
+};
 
 disableForms();
-initMap(handleMapLoadSuccess, setAddress);
+initMap(handleMapLoaded, setAddress);

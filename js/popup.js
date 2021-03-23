@@ -11,7 +11,7 @@ const onPopupEscKeydown = function(evt) {
 
 const onPopupClick = function() {
   closePopup(MAIN_BLOCK);
-}
+};
 
 const openPopup = function(node, parent, className = '.success') {
   const cloneElement = node.content.cloneNode(true);
