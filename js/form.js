@@ -7,6 +7,11 @@ const AD_FORM = document.querySelector('.ad-form');
 const AD_FORM_RESET = document.querySelector('.ad-form__reset');
 const MAP_FILTERS = document.querySelector('.map__filters');
 const MAIN_BLOCK = document.querySelector('main');
+const PHOTO_AVATAR_PREVIEW = AD_FORM.querySelector('.ad-form-header__preview img');
+const PHOTO_HOUSE_PREVIEW = AD_FORM.querySelector('.ad-form__photo');
+const CLONE_PHOTO = PHOTO_AVATAR_PREVIEW.cloneNode(true);
+const POPUP_SUCCESS_TEMPLATE = document.querySelector('#success');
+const POPUP_ERROR_TEMPLATE = document.querySelector('#error');
 
 const FieldNodes = {
   TYPE: AD_FORM.querySelector('#type'),
@@ -16,10 +21,21 @@ const FieldNodes = {
   ADDRESS: AD_FORM.querySelector('#address'),
   ROOM_NUMBER: AD_FORM.querySelector('#room_number'),
   CAPACITY: AD_FORM.querySelector('#capacity'),
+  PHOTO_AVATAR: AD_FORM.querySelector('#avatar'),
+  PHOTO_HOUSE: AD_FORM.querySelector('#images'),
 };
 
-const POPUP_SUCCESS_TEMPLATE = document.querySelector('#success');
-const POPUP_ERROR_TEMPLATE = document.querySelector('#error');
+const FILE_TYPES = [
+  'gif',
+  'jpg',
+  'jpeg',
+  'png',
+];
+
+const CloneSize = {
+  width: '70',
+  height: '70',
+};
 
 const HOUSE_PRICE = {
   palace: 10000,
@@ -33,6 +49,48 @@ const ROOMS_VALUES = {
   2: ['1', '2'],
   3: ['1', '2', '3'],
   100: ['0'],
+};
+
+const fieldPhotoAvatarChange = (evt) => {
+  const FILE = evt.target.files[0];
+  const FILE_NAME = FILE.name.toLowerCase();
+
+  const matches = FILE_TYPES.some((file) => {
+    return FILE_NAME.endsWith(file)
+  })
+
+  if (matches) {
+    const READER = new FileReader();
+
+    READER.addEventListener('load', () => {
+      PHOTO_AVATAR_PREVIEW.src = READER.result;
+    })
+
+    READER.readAsDataURL(FILE);
+  }
+};
+
+const fieldPhotoHouseChange = (evt) => {
+  const FILE = evt.target.files[0];
+  const FILE_NAME = FILE.name.toLowerCase();
+
+  const matches = FILE_TYPES.some((file) => {
+    return FILE_NAME.endsWith(file)
+  })
+
+  if (matches) {
+    const READER = new FileReader();
+
+    READER.addEventListener('load', () => {
+      const CLONE = CLONE_PHOTO;
+      CLONE.src = READER.result;
+      CLONE.width = CloneSize.width;
+      CLONE.height = CloneSize.height;
+      PHOTO_HOUSE_PREVIEW.appendChild(CLONE);
+    })
+
+    READER.readAsDataURL(FILE);
+  }
 };
 
 const fieldRoomNumberChangeHandler = function(evt) {
@@ -116,7 +174,7 @@ const getHandleFilterChange = (setSelect, setCheckbox) => (evt) => {
 let handleFilterChange;
 
 const addEventListeners = function() {
-  const {TYPE, TIMEIN, TIMEOUT, ROOM_NUMBER} = FieldNodes;
+  const {TYPE, TIMEIN, TIMEOUT, ROOM_NUMBER, PHOTO_AVATAR, PHOTO_HOUSE} = FieldNodes;
 
   TYPE.addEventListener('change', fieldTypeChangeHandler);
   TIMEIN.addEventListener('change', fieldTimeinChangeHandler);
@@ -124,10 +182,12 @@ const addEventListeners = function() {
   ROOM_NUMBER.addEventListener('change', fieldRoomNumberChangeHandler);
   AD_FORM.addEventListener('submit', submitFormHandler);
   AD_FORM_RESET.addEventListener('click', resetFormHandler);
+  PHOTO_AVATAR.addEventListener('change', fieldPhotoAvatarChange);
+  PHOTO_HOUSE.addEventListener('change', fieldPhotoHouseChange);
 };
 
 const removeEventListeners = function() {
-  const {TYPE, TIMEIN, TIMEOUT, ROOM_NUMBER} = FieldNodes;
+  const {TYPE, TIMEIN, TIMEOUT, ROOM_NUMBER, PHOTO_AVATAR, PHOTO_HOUSE} = FieldNodes;
 
   TYPE.removeEventListener('change', fieldTypeChangeHandler);
   TIMEIN.removeEventListener('change', fieldTimeinChangeHandler);
@@ -135,6 +195,8 @@ const removeEventListeners = function() {
   ROOM_NUMBER.removeEventListener('change', fieldRoomNumberChangeHandler);
   AD_FORM.removeEventListener('submit', submitFormHandler);
   AD_FORM_RESET.removeEventListener('click', resetFormHandler);
+  PHOTO_AVATAR.removeEventListener('change', fieldPhotoAvatarChange);
+  PHOTO_HOUSE.removeEventListener('change', fieldPhotoHouseChange);
 };
 
 const disableForms = function() {

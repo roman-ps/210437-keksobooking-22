@@ -29,11 +29,6 @@ const updatePins = () => {
   renderPins(getData());
 };
 
-// TODO заменить заглушку на реальный debounce
-const debounce = (cb) => () => {
-  cb();
-};
-
 const updatePinsDebounced = _.debounce(updatePins, RENDER_TIMEOUT);
 
 const handleDataSuccess = (rawData) => {

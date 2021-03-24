@@ -49,4 +49,8 @@ const isEscEvent = function(evt) {
   return evt.key === 'Escape' || evt.key === 'Esc';
 };
 
-export {getRandomNumber, getRandomElement, getRandomArrayList, getNodes, pluralize, getRoundNumber, isEscEvent};
+const hasObjKey = (obj, key) => {
+  return Object.prototype.hasOwnProperty.call(obj, key);
+};
+
+export {getRandomNumber, getRandomElement, getRandomArrayList, getNodes, pluralize, getRoundNumber, isEscEvent, hasObjKey};
