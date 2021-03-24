@@ -33,6 +33,7 @@ const updatePinsDebounced = _.debounce(updatePins, RENDER_TIMEOUT);
 
 const handleDataSuccess = (rawData) => {
   storeData(rawData);
+  enableForms(handleSelectChange, handleCheckboxChange);
   renderPins(getData());
 };
 
@@ -47,7 +48,6 @@ const handleDataError = () => {
 };
 
 const handleMapLoaded = () => {
-  enableForms(handleSelectChange, handleCheckboxChange);
 
   loadData()
     .then(handleDataSuccess)

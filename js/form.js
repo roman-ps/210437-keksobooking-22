@@ -202,6 +202,7 @@ const removeEventListeners = function() {
 const disableForms = function() {
   disableFormFields(AD_FORM, 'fieldset');
   disableFormFields(MAP_FILTERS, 'select');
+  disableFormFields(MAP_FILTERS, 'fieldset');
   removeEventListeners();
   MAP_FILTERS.removeEventListener('change', handleFilterChange);
   handleFilterChange = null;
@@ -212,6 +213,7 @@ const enableForms = function(setSelect, setCheckbox) {
   MAP_FILTERS.addEventListener('change', handleFilterChange);
   enableFormFields(AD_FORM, 'fieldset');
   enableFormFields(MAP_FILTERS, 'select');
+  enableFormFields(MAP_FILTERS, 'fieldset');
   addEventListeners();
 };
 
