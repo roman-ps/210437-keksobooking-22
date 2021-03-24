@@ -5,6 +5,8 @@ import {disableForms, enableForms, setAddress} from './form.js';
 import {loadData} from './api.js';
 import {setFieldValue, setCheckboxValue, checkData} from './filter.js';
 
+/* global _:readonly */
+
 const RENDER_TIMEOUT = 500;
 
 const adaptPoints = (ad) => ({
@@ -32,7 +34,7 @@ const debounce = (cb) => () => {
   cb();
 };
 
-const updatePinsDebounced = debounce(updatePins, RENDER_TIMEOUT);
+const updatePinsDebounced = _.debounce(updatePins, RENDER_TIMEOUT);
 
 const handleDataSuccess = (rawData) => {
   storeData(rawData);
