@@ -83,53 +83,21 @@ const checkFeatures = (features) => {
   return true;
 };
 
-const checkSelectKeys = (key, type) => {
-  if (actualValues[key] && actualValues[key] !== 'any' && `${type}` !== actualValues[key]) {
-
-    return false;
+const checkSelectKeys = (key, type, price = false) => {
+  if (price) {
+    return (actualValues[key] && actualValues[key] !== 'any' && !checkPrice(actualValues[key], type))
   }
+
+  return (actualValues[key] && actualValues[key] !== 'any' && `${type}` !== actualValues[key])
 };
-
-const checkSelectPriceKeys = (key, type) => {
-  if (actualValues[key] && actualValues[key] !== 'any' && !checkPrice(actualValues[key], type)) {
-
-    return false;
-  }
-};
-
-// const checkSelectAllKeys = (key, type, price = 'false') => {
-//   if (price) {
-//     if (actualValues[key] && actualValues[key] !== 'any' && !checkPrice(actualValues[key], type)) {
-
-//       return false;
-//     }
-//   }
-//   if (actualValues[key] && actualValues[key] !== 'any' && `${type}` !== actualValues[key]) {
-
-//     return false;
-//   }
-// };
 
 const checkData = (data) => {
-  checkSelectKeys(SelectKeys.TYPE, data.offer.type);
-  checkSelectPriceKeys(SelectKeys.PRICE, data.offer.price);
-  checkSelectKeys(SelectKeys.ROOMS, data.offer.rooms);
-  checkSelectKeys(SelectKeys.GUESTS, data.offer.guests);
-  // if (actualValues[SelectKeys.TYPE] && actualValues[SelectKeys.TYPE] !== 'any' && `${data.offer.type}` !== actualValues[SelectKeys.TYPE]) {
-  //   return false;
-  // }
-
-  // if (actualValues[SelectKeys.PRICE] && actualValues[SelectKeys.PRICE] !== 'any' && !checkPrice(actualValues[SelectKeys.PRICE], data.offer.price)) {
-  //   return false;
-  // }
-
-  // if (actualValues[SelectKeys.ROOMS] && actualValues[SelectKeys.ROOMS] !== 'any' && `${data.offer.rooms}` !== actualValues[SelectKeys.ROOMS]) {
-  //   return false;
-  // }
-
-  // if (actualValues[SelectKeys.GUESTS] && actualValues[SelectKeys.GUESTS] !== 'any' && `${data.offer.guests}` !== actualValues[SelectKeys.GUESTS]) {
-  //   return false;
-  // }
+  if (checkSelectKeys(SelectKeys.TYPE, data.offer.type) ||
+      checkSelectKeys(SelectKeys.PRICE, data.offer.price, true) ||
+      checkSelectKeys(SelectKeys.ROOMS, data.offer.rooms) ||
+      checkSelectKeys(SelectKeys.GUESTS, data.offer.guests)) {
+    return false
+  }
 
   return checkFeatures(data.offer.features);
 };
