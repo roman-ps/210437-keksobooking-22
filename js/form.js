@@ -221,7 +221,8 @@ const enableForms = (setSelect, setCheckbox) => {
   addEventListeners();
 };
 
-const enableMapFiltersForms = () => {
+const enableAdFiltersForms = () => {
+  addEventListeners();
   enableFormFields(AD_FORM, 'fieldset');
 };
 
@@ -229,4 +230,4 @@ const setAddress = ({lat, lng}) => {
   FieldNodes.ADDRESS.value = `${getRoundNumber(lat)}, ${getRoundNumber(lng)}`;
 };
 
-export {disableForms, setAddress, enableForms, enableMapFiltersForms}
+export {disableForms, setAddress, enableForms, enableAdFiltersForms}

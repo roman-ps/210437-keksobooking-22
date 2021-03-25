@@ -1,7 +1,7 @@
 import {initMap, addPins, removePins} from './map.js';
 import {fillCard} from './ads.js';
 import {storeData, getData, prepareData} from './store.js';
-import {disableForms, enableForms, setAddress, enableMapFiltersForms} from './form.js';
+import {disableForms, enableForms, setAddress, enableAdFiltersForms} from './form.js';
 import {loadData} from './api.js';
 import {setFieldValue, setCheckboxValue, checkData} from './filter.js';
 
@@ -48,7 +48,7 @@ const handleDataError = () => {
 };
 
 const handleMapLoaded = () => {
-  enableMapFiltersForms();
+  enableAdFiltersForms();
   loadData()
     .then(handleDataSuccess)
     .catch(handleDataError)
