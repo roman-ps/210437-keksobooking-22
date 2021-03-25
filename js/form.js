@@ -51,7 +51,7 @@ const ROOMS_VALUES = {
   100: ['0'],
 };
 
-const fieldPhotoAvatarChange = (evt) => {
+const fieldPhotoAvatarChangeHandler = (evt) => {
   const FILE = evt.target.files[0];
   const FILE_NAME = FILE.name.toLowerCase();
 
@@ -70,7 +70,7 @@ const fieldPhotoAvatarChange = (evt) => {
   }
 };
 
-const fieldPhotoHouseChange = (evt) => {
+const fieldPhotoHouseChangeHandler = (evt) => {
   const FILE = evt.target.files[0];
   const FILE_NAME = FILE.name.toLowerCase();
 
@@ -159,7 +159,7 @@ const submitFormHandler = function(evt) {
     })
 };
 
-const getHandleFilterChange = (setSelect, setCheckbox) => (evt) => {
+const getFilterChangeHandle = (setSelect, setCheckbox) => (evt) => {
   const field = evt.target;
   if (field.tagName === 'SELECT') {
     setSelect(field.id, field.value);
@@ -171,7 +171,7 @@ const getHandleFilterChange = (setSelect, setCheckbox) => (evt) => {
   }
 };
 
-let handleFilterChange;
+let filterChangeHandler;
 
 const addEventListeners = function() {
   const {TYPE, TIMEIN, TIMEOUT, ROOM_NUMBER, PHOTO_AVATAR, PHOTO_HOUSE} = FieldNodes;
@@ -182,8 +182,8 @@ const addEventListeners = function() {
   ROOM_NUMBER.addEventListener('change', fieldRoomNumberChangeHandler);
   AD_FORM.addEventListener('submit', submitFormHandler);
   AD_FORM_RESET.addEventListener('click', resetFormHandler);
-  PHOTO_AVATAR.addEventListener('change', fieldPhotoAvatarChange);
-  PHOTO_HOUSE.addEventListener('change', fieldPhotoHouseChange);
+  PHOTO_AVATAR.addEventListener('change', fieldPhotoAvatarChangeHandler);
+  PHOTO_HOUSE.addEventListener('change', fieldPhotoHouseChangeHandler);
 };
 
 const removeEventListeners = function() {
@@ -195,8 +195,8 @@ const removeEventListeners = function() {
   ROOM_NUMBER.removeEventListener('change', fieldRoomNumberChangeHandler);
   AD_FORM.removeEventListener('submit', submitFormHandler);
   AD_FORM_RESET.removeEventListener('click', resetFormHandler);
-  PHOTO_AVATAR.removeEventListener('change', fieldPhotoAvatarChange);
-  PHOTO_HOUSE.removeEventListener('change', fieldPhotoHouseChange);
+  PHOTO_AVATAR.removeEventListener('change', fieldPhotoAvatarChangeHandler);
+  PHOTO_HOUSE.removeEventListener('change', fieldPhotoHouseChangeHandler);
 };
 
 const disableForms = function() {
@@ -204,13 +204,13 @@ const disableForms = function() {
   disableFormFields(MAP_FILTERS, 'select');
   disableFormFields(MAP_FILTERS, 'fieldset');
   removeEventListeners();
-  MAP_FILTERS.removeEventListener('change', handleFilterChange);
-  handleFilterChange = null;
+  MAP_FILTERS.removeEventListener('change', filterChangeHandler);
+  filterChangeHandler = null;
 };
 
 const enableForms = function(setSelect, setCheckbox) {
-  handleFilterChange = getHandleFilterChange(setSelect, setCheckbox);
-  MAP_FILTERS.addEventListener('change', handleFilterChange);
+  filterChangeHandler = getFilterChangeHandle(setSelect, setCheckbox);
+  MAP_FILTERS.addEventListener('change', filterChangeHandler);
   enableFormFields(AD_FORM, 'fieldset');
   enableFormFields(MAP_FILTERS, 'select');
   enableFormFields(MAP_FILTERS, 'fieldset');
