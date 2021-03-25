@@ -55,9 +55,10 @@ const addPins = (points, onClick) => {
 
 let mainMarker;
 
-const moveMainMarker = (coord) => {
-  mainMarker.on('move', coord);
-}
+const moveMainMarkerDefault = () => {
+  MAP.setView(DEFAULT_COORD)
+  mainMarker.setLatLng(DEFAULT_COORD);
+};
 
 /**
  * Инициализация карты
@@ -100,4 +101,4 @@ function initMap(onLoad, onPinMove) {
   mainMarker.on('move', mainPinMoveHandler);
 }
 
-export {initMap, DEFAULT_COORD, addPins, removePins, moveMainMarker}
+export {initMap, DEFAULT_COORD, addPins, removePins, moveMainMarkerDefault}

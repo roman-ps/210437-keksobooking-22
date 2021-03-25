@@ -1,7 +1,7 @@
 import {sendData} from './api.js';
 import {openPopup} from './popup.js';
 import {getRoundNumber} from './utils.js';
-import {DEFAULT_COORD, moveMainMarker} from './map.js';
+import {DEFAULT_COORD, moveMainMarkerDefault} from './map.js';
 
 const AD_FORM = document.querySelector('.ad-form');
 const AD_FORM_RESET = document.querySelector('.ad-form__reset');
@@ -143,7 +143,7 @@ const resetFormHandler = (evt) => {
   evt.preventDefault();
   AD_FORM.reset();
   MAP_FILTERS.reset();
-  moveMainMarker(DEFAULT_COORD);
+  moveMainMarkerDefault();
   setAddress(DEFAULT_COORD);
   FieldNodes.PRICE.setAttribute('placeholder', DEFAULT_PRICE_PLACEHOLDER);
 };
@@ -216,7 +216,7 @@ const disableForms = () => {
 const enableForms = (setSelect, setCheckbox) => {
   filterChangeHandler = getFilterChangeHandle(setSelect, setCheckbox);
   MAP_FILTERS.addEventListener('change', filterChangeHandler);
-  enableFormFields(AD_FORM, 'fieldset');
+  // enableFormFields(AD_FORM, 'fieldset');
   enableFormFields(MAP_FILTERS, 'select');
   enableFormFields(MAP_FILTERS, 'fieldset');
   addEventListeners();
