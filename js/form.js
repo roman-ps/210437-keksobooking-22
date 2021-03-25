@@ -216,14 +216,17 @@ const disableForms = () => {
 const enableForms = (setSelect, setCheckbox) => {
   filterChangeHandler = getFilterChangeHandle(setSelect, setCheckbox);
   MAP_FILTERS.addEventListener('change', filterChangeHandler);
-  // enableFormFields(AD_FORM, 'fieldset');
   enableFormFields(MAP_FILTERS, 'select');
   enableFormFields(MAP_FILTERS, 'fieldset');
   addEventListeners();
+};
+
+const enableMapFiltersForms = () => {
+  enableFormFields(AD_FORM, 'fieldset');
 };
 
 const setAddress = ({lat, lng}) => {
   FieldNodes.ADDRESS.value = `${getRoundNumber(lat)}, ${getRoundNumber(lng)}`;
 };
 
-export {disableForms, setAddress, enableForms}
+export {disableForms, setAddress, enableForms, enableMapFiltersForms}
