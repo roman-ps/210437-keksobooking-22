@@ -53,6 +53,12 @@ const addPins = (points, onClick) => {
   points.forEach(addPin);
 };
 
+let mainMarker;
+
+const moveMainMarker = (coord) => {
+  mainMarker.on('move', coord);
+}
+
 /**
  * Инициализация карты
  * 1 рендер главного пина
@@ -83,7 +89,7 @@ function initMap(onLoad, onPinMove) {
   ).addTo(MAP);
 
   const mainIcon = LEAFLET.icon(MAIN_ICON);
-  const mainMarker = LEAFLET.marker(
+  mainMarker = LEAFLET.marker(
     DEFAULT_COORD,
     {
       draggable: true,
@@ -94,4 +100,4 @@ function initMap(onLoad, onPinMove) {
   mainMarker.on('move', mainPinMoveHandler);
 }
 
-export {initMap, DEFAULT_COORD, addPins, removePins}
+export {initMap, DEFAULT_COORD, addPins, removePins, moveMainMarker}

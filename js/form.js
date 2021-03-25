@@ -1,7 +1,7 @@
 import {sendData} from './api.js';
 import {openPopup} from './popup.js';
 import {getRoundNumber} from './utils.js';
-import {DEFAULT_COORD} from './map.js';
+import {DEFAULT_COORD, moveMainMarker} from './map.js';
 
 const AD_FORM = document.querySelector('.ad-form');
 const AD_FORM_RESET = document.querySelector('.ad-form__reset');
@@ -24,6 +24,8 @@ const FieldNodes = {
   PHOTO_AVATAR: AD_FORM.querySelector('#avatar'),
   PHOTO_HOUSE: AD_FORM.querySelector('#images'),
 };
+
+const DEFAULT_PRICE_PLACEHOLDER = 1000;
 
 const FILE_TYPES = [
   'gif',
@@ -140,7 +142,10 @@ const fieldTimeoutChangeHandler = (evt) => {
 const resetFormHandler = (evt) => {
   evt.preventDefault();
   AD_FORM.reset();
+  MAP_FILTERS.reset();
+  moveMainMarker(DEFAULT_COORD);
   setAddress(DEFAULT_COORD);
+  FieldNodes.PRICE.setAttribute('placeholder', DEFAULT_PRICE_PLACEHOLDER);
 };
 
 const submitFormHandler = (evt) => {
