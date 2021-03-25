@@ -1,4 +1,3 @@
-import {HOUSE_TYPES} from './data.js';
 import {getRoundNumber, getNodes, pluralize} from './utils.js';
 
 const CARD_TEMPLATE = document.querySelector('#card');
@@ -6,6 +5,13 @@ const CARD_TEMPLATE = document.querySelector('#card');
 const POPUP_SELECTORS = {
   feature: '.popup__feature',
   photo: '.popup__photo',
+};
+
+const HOUSE_TYPES = {
+  palace: 'Дворец',
+  flat: 'Квартира',
+  house: 'Дом',
+  bungalow: 'Бунгало',
 };
 
 const SELECTORS = {
