@@ -1,7 +1,7 @@
 const DEFAULT_COORD = {
   lat: 35.68951,
   lng: 139.69171,
-}
+};
 
 const VIEW_MAP = 10;
 const LEAFLET_TILE_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -22,6 +22,13 @@ const ICON = {
 // eslint-disable-next-line
 const LEAFLET = L;
 const MAP = LEAFLET.map('map-canvas');
+let MARKERS = [];
+
+const removePins = () => {
+  MARKERS.forEach((marker) => {
+    marker.remove();
+  })
+};
 
 /**
  * 1 рендер пинов
@@ -30,6 +37,7 @@ const MAP = LEAFLET.map('map-canvas');
  * @param {*} onClick - обработчик клика по пину
  */
 const addPins = (points, onClick) => {
+
   const addPin = ({lat, lng}, idx) => {
     const icon = LEAFLET.icon(ICON);
     const marker = LEAFLET.marker({lat, lng}, {icon});
@@ -39,10 +47,18 @@ const addPins = (points, onClick) => {
       {keepInView: true},
     );
     marker.addTo(MAP);
+    MARKERS.push(marker);
   };
 
   points.forEach(addPin);
-}
+};
+
+let mainMarker;
+
+const moveMainMarkerDefault = () => {
+  MAP.setView(DEFAULT_COORD)
+  mainMarker.setLatLng(DEFAULT_COORD);
+};
 
 /**
  * Инициализация карты
@@ -74,7 +90,7 @@ function initMap(onLoad, onPinMove) {
   ).addTo(MAP);
 
   const mainIcon = LEAFLET.icon(MAIN_ICON);
-  const mainMarker = LEAFLET.marker(
+  mainMarker = LEAFLET.marker(
     DEFAULT_COORD,
     {
       draggable: true,
@@ -85,4 +101,4 @@ function initMap(onLoad, onPinMove) {
   mainMarker.on('move', mainPinMoveHandler);
 }
 
-export {initMap, DEFAULT_COORD, addPins}
+export {initMap, DEFAULT_COORD, addPins, removePins, moveMainMarkerDefault}

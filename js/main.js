@@ -1,7 +1,13 @@
-import {initMap, addPins} from './map.js';
+import {initMap, addPins, removePins} from './map.js';
 import {fillCard} from './ads.js';
-import {disableForms, enableForms, setAddress} from './form.js';
-import {getData} from './api.js'
+import {storeData, getData, prepareData} from './store.js';
+import {disableForms, enableForms, setAddress, enableAdFiltersForms} from './form.js';
+import {loadData} from './api.js';
+import {setFieldValue, setCheckboxValue, checkData} from './filter.js';
+
+/* global _:readonly */
+
+const RENDER_TIMEOUT = 500;
 
 const adaptPoints = (ad) => ({
   title: ad.offer.title,
@@ -9,37 +15,54 @@ const adaptPoints = (ad) => ({
   lng: ad.location.lng,
 });
 
-const handleDataSuccess = (data) => {
+const renderPins = (data) => {
   const points = data.map(adaptPoints);
   const renderAd = (idx) => fillCard(data[idx]);
 
+  removePins();
   addPins(points, renderAd);
 };
 
-const handleDataError = (message) => {
-  const alertContainer = document.createElement('div');
-  alertContainer.style.zIndex = 100;
-  alertContainer.style.position = 'absolute';
-  alertContainer.style.left = 0;
-  alertContainer.style.top = 0;
-  alertContainer.style.right = 0;
-  alertContainer.style.padding = '10px 3px';
-  alertContainer.style.fontSize = '22px';
-  alertContainer.style.textAlign = 'center';
-  alertContainer.style.backgroundColor = 'red';
-  alertContainer.textContent = message;
+const updatePins = () => {
+  prepareData(checkData);
+  removePins();
+  renderPins(getData());
+};
 
+const updatePinsDebounced = _.debounce(updatePins, RENDER_TIMEOUT);
+
+const handleDataSuccess = (rawData) => {
+  storeData(rawData);
+  enableForms(handleSelectChange, handleCheckboxChange);
+  renderPins(getData());
+};
+
+const handleDataError = () => {
+  const alertContainer = document.createElement('div');
+  alertContainer.classList.add('alert');
+  const message = 'Данные не загрузились';
+  alertContainer.textContent = message;
   document.body.append(alertContainer);
 
-  setTimeout(() => {
-    alertContainer.remove();
-  }, 3000);
+  setTimeout(alertContainer.remove, 3000);
+};
+
+const handleMapLoaded = () => {
+  enableAdFiltersForms();
+  loadData()
+    .then(handleDataSuccess)
+    .catch(handleDataError)
+};
+
+const handleSelectChange = (...args) => {
+  setFieldValue(...args);
+  updatePinsDebounced();
+};
+
+const handleCheckboxChange = (...args) => {
+  setCheckboxValue(...args);
+  updatePinsDebounced();
 };
 
 disableForms();
-initMap(enableForms, setAddress);
-const dataPromise = getData();
-
-dataPromise
-  .then(handleDataSuccess)
-  .catch(handleDataError('Данные не загрузились'))
+initMap(handleMapLoaded, setAddress);

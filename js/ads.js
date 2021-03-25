@@ -25,19 +25,19 @@ const ROOMS_OPTIONS = [
   'комната',
   'комнаты',
   'комнат',
-]
+];
 
 const GUESTS_OPTIONS = [
   'гостя',
   'гостей',
   'гостей',
-]
+];
 
-const getHouseType = function(type) {
+const getHouseType = (type) => {
   return HOUSE_TYPES[type];
 };
 
-const prepareFeatures = function(parent, features) {
+const prepareFeatures = (parent, features) => {
   let children = parent.querySelectorAll(POPUP_SELECTORS.feature);
 
   children.forEach(function(child) {
@@ -51,7 +51,7 @@ const prepareFeatures = function(parent, features) {
 
 };
 
-const renderPhotos = function(parent, photos) {
+const renderPhotos = (parent, photos) => {
   const imgElement = parent.querySelector(POPUP_SELECTORS.photo);
   const img = imgElement.cloneNode(true);
   const fragment = document.createDocumentFragment();
@@ -67,18 +67,18 @@ const renderPhotos = function(parent, photos) {
   return fragment;
 };
 
-const getCapacityText = function(offer) {
+const getCapacityText = (offer) => {
   const rooms = pluralize(offer.rooms, ROOMS_OPTIONS);
   const guests = pluralize(offer.rooms, GUESTS_OPTIONS);
 
   return `${offer.rooms} ${rooms} для ${offer.guests} ${guests}`;
-}
+};
 
-const getAddressCoords = function({lat, lng}) {
+const getAddressCoords = ({lat, lng}) => {
   return `${getRoundNumber(lat)}, ${getRoundNumber(lng)}`;
-}
+};
 
-const fillCard = function(cardData) {
+const fillCard = (cardData) => {
   const ad = CARD_TEMPLATE.content.cloneNode(true);
   const adNodes = getNodes(SELECTORS, ad);
 
@@ -94,6 +94,6 @@ const fillCard = function(cardData) {
   adNodes.avatar.src = cardData.author.avatar;
 
   return ad;
-}
+};
 
 export {fillCard};

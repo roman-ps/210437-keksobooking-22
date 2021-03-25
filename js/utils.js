@@ -1,4 +1,4 @@
-const getRandomNumber = function(min, max, digits = 0, r = Math.random()) {
+const getRandomNumber = (min, max, digits = 0, r = Math.random()) => {
   if (isNaN(min) || isNaN(max) || isNaN(digits)) {
     throw new Error('Аргумент не является числом!');
   }
@@ -8,7 +8,7 @@ const getRandomNumber = function(min, max, digits = 0, r = Math.random()) {
   return Math.round(randomNumber * degree) / degree;
 };
 
-const getRandomElement = function(array) {
+const getRandomElement = (array) => {
   if (typeof array !== 'object' || array === null) {
     throw new Error('Неправильный формат данных!');
   }
@@ -17,7 +17,7 @@ const getRandomElement = function(array) {
   return newArray[getRandomNumber(0, newArray.length - 1)];
 };
 
-const getRandomArrayList = function(array) {
+const getRandomArrayList = (array) => {
   let newArray = Array.from(array);
 
   return newArray.filter(function() {
@@ -25,7 +25,7 @@ const getRandomArrayList = function(array) {
   });
 };
 
-const getNodes = function(selectors, parent) {
+const getNodes = (selectors, parent) => {
   let nodes = {}
   const keys = Object.entries(selectors);
 
@@ -36,17 +36,21 @@ const getNodes = function(selectors, parent) {
   return nodes;
 };
 
-const pluralize = function(n, variants) {
+const pluralize = (n, variants) => {
   return variants[[(n % 10 === 1 && n % 100 !== 11) ? 0 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2]];
 };
 
-const getRoundNumber = function(number, digits = 5) {
+const getRoundNumber = (number, digits = 5) => {
   let degree =  Math.pow(10, digits);
   return Math.round(number * degree) / degree;
 };
 
-const isEscEvent = function(evt) {
+const isEscEvent = (evt) => {
   return evt.key === 'Escape' || evt.key === 'Esc';
 };
 
-export {getRandomNumber, getRandomElement, getRandomArrayList, getNodes, pluralize, getRoundNumber, isEscEvent};
+const hasObjKey = (obj, key) => {
+  return Object.prototype.hasOwnProperty.call(obj, key);
+};
+
+export {getRandomNumber, getRandomElement, getRandomArrayList, getNodes, pluralize, getRoundNumber, isEscEvent, hasObjKey};

@@ -1,12 +1,17 @@
 import {sendData} from './api.js';
 import {openPopup} from './popup.js';
 import {getRoundNumber} from './utils.js';
-import {DEFAULT_COORD} from './map.js';
+import {DEFAULT_COORD, moveMainMarkerDefault} from './map.js';
 
 const AD_FORM = document.querySelector('.ad-form');
 const AD_FORM_RESET = document.querySelector('.ad-form__reset');
 const MAP_FILTERS = document.querySelector('.map__filters');
 const MAIN_BLOCK = document.querySelector('main');
+const PHOTO_AVATAR_PREVIEW = AD_FORM.querySelector('.ad-form-header__preview img');
+const PHOTO_HOUSE_PREVIEW = AD_FORM.querySelector('.ad-form__photo');
+const CLONE_PHOTO = PHOTO_AVATAR_PREVIEW.cloneNode(true);
+const POPUP_SUCCESS_TEMPLATE = document.querySelector('#success');
+const POPUP_ERROR_TEMPLATE = document.querySelector('#error');
 
 const FieldNodes = {
   TYPE: AD_FORM.querySelector('#type'),
@@ -16,9 +21,23 @@ const FieldNodes = {
   ADDRESS: AD_FORM.querySelector('#address'),
   ROOM_NUMBER: AD_FORM.querySelector('#room_number'),
   CAPACITY: AD_FORM.querySelector('#capacity'),
-}
-const POPUP_SUCCESS_TEMPLATE = document.querySelector('#success');
-const POPUP_ERROR_TEMPLATE = document.querySelector('#error');
+  PHOTO_AVATAR: AD_FORM.querySelector('#avatar'),
+  PHOTO_HOUSE: AD_FORM.querySelector('#images'),
+};
+
+const DEFAULT_PRICE_PLACEHOLDER = 1000;
+
+const FILE_TYPES = [
+  'gif',
+  'jpg',
+  'jpeg',
+  'png',
+];
+
+const CloneSize = {
+  width: '70',
+  height: '70',
+};
 
 const HOUSE_PRICE = {
   palace: 10000,
@@ -34,7 +53,49 @@ const ROOMS_VALUES = {
   100: ['0'],
 };
 
-const fieldRoomNumberChangeHandler = function(evt) {
+const fieldPhotoAvatarChangeHandler = (evt) => {
+  const FILE = evt.target.files[0];
+  const FILE_NAME = FILE.name.toLowerCase();
+
+  const matches = FILE_TYPES.some((file) => {
+    return FILE_NAME.endsWith(file)
+  })
+
+  if (matches) {
+    const READER = new FileReader();
+
+    READER.addEventListener('load', () => {
+      PHOTO_AVATAR_PREVIEW.src = READER.result;
+    })
+
+    READER.readAsDataURL(FILE);
+  }
+};
+
+const fieldPhotoHouseChangeHandler = (evt) => {
+  const FILE = evt.target.files[0];
+  const FILE_NAME = FILE.name.toLowerCase();
+
+  const matches = FILE_TYPES.some((file) => {
+    return FILE_NAME.endsWith(file)
+  })
+
+  if (matches) {
+    const READER = new FileReader();
+
+    READER.addEventListener('load', () => {
+      const CLONE = CLONE_PHOTO;
+      CLONE.src = READER.result;
+      CLONE.width = CloneSize.width;
+      CLONE.height = CloneSize.height;
+      PHOTO_HOUSE_PREVIEW.appendChild(CLONE);
+    })
+
+    READER.readAsDataURL(FILE);
+  }
+};
+
+const fieldRoomNumberChangeHandler = (evt) => {
   let value = evt.target.value;
   let options = FieldNodes.CAPACITY.querySelectorAll('option');
   options.forEach(function (elem) {
@@ -45,46 +106,49 @@ const fieldRoomNumberChangeHandler = function(evt) {
   })
 };
 
-const changeAttribute = function(elem, attr1, attr2) {
+const changeAttribute = (elem, attr1, attr2) => {
   elem.removeAttribute(attr1);
   elem.setAttribute(attr2, '');
 };
 
-const disableFormFields = function(node, childFields, classNode = 'ad-form--disabled') {
+const disableFormFields = (node, childFields, classNode = 'ad-form--disabled') => {
   node.classList.add(classNode);
   let children = node.querySelectorAll(childFields);
   children.forEach((elem) => elem.setAttribute('disabled', ''));
 };
 
-const enableFormFields = function(node, childFields, classNode = 'ad-form--disabled') {
+const enableFormFields = (node, childFields, classNode = 'ad-form--disabled') => {
   node.classList.remove(classNode);
   let children = node.querySelectorAll(childFields);
   children.forEach((elem) => elem.removeAttribute('disabled'));
 };
 
-const fieldTypeChangeHandler = function(evt) {
+const fieldTypeChangeHandler = (evt) => {
   let value = evt.target.value;
   FieldNodes.PRICE.setAttribute('placeholder', HOUSE_PRICE[value]);
   FieldNodes.PRICE.setAttribute('min', HOUSE_PRICE[value]);
 };
 
-const fieldTimeinChangeHandler = function(evt) {
+const fieldTimeinChangeHandler = (evt) => {
   let currentValue = evt.target.value;
   FieldNodes.TIMEOUT.value = currentValue;
 };
 
-const fieldTimeoutChangeHandler = function(evt) {
+const fieldTimeoutChangeHandler = (evt) => {
   let currentValue = evt.target.value;
   FieldNodes.TIMEIN.value = currentValue;
 };
 
-const resetFormHandler = function(evt) {
+const resetFormHandler = (evt) => {
   evt.preventDefault();
   AD_FORM.reset();
+  MAP_FILTERS.reset();
+  moveMainMarkerDefault();
   setAddress(DEFAULT_COORD);
-}
+  FieldNodes.PRICE.setAttribute('placeholder', DEFAULT_PRICE_PLACEHOLDER);
+};
 
-const submitFormHandler = function(evt) {
+const submitFormHandler = (evt) => {
   evt.preventDefault();
 
   const formData = new FormData(evt.target);
@@ -97,11 +161,25 @@ const submitFormHandler = function(evt) {
     })
     .catch(() => {
       openPopup(POPUP_ERROR_TEMPLATE, MAIN_BLOCK, '.error');
-    });
+    })
 };
 
-const addEventListeners = function() {
-  const {TYPE, TIMEIN, TIMEOUT, ROOM_NUMBER} = FieldNodes;
+const getFilterChangeHandle = (setSelect, setCheckbox) => (evt) => {
+  const field = evt.target;
+  if (field.tagName === 'SELECT') {
+    setSelect(field.id, field.value);
+    return;
+  }
+  if (field.tagName === 'INPUT') {
+    setCheckbox(field.id, field.checked);
+    return;
+  }
+};
+
+let filterChangeHandler;
+
+const addEventListeners = () => {
+  const {TYPE, TIMEIN, TIMEOUT, ROOM_NUMBER, PHOTO_AVATAR, PHOTO_HOUSE} = FieldNodes;
 
   TYPE.addEventListener('change', fieldTypeChangeHandler);
   TIMEIN.addEventListener('change', fieldTimeinChangeHandler);
@@ -109,10 +187,12 @@ const addEventListeners = function() {
   ROOM_NUMBER.addEventListener('change', fieldRoomNumberChangeHandler);
   AD_FORM.addEventListener('submit', submitFormHandler);
   AD_FORM_RESET.addEventListener('click', resetFormHandler);
+  PHOTO_AVATAR.addEventListener('change', fieldPhotoAvatarChangeHandler);
+  PHOTO_HOUSE.addEventListener('change', fieldPhotoHouseChangeHandler);
 };
 
-const removeEventListeners = function() {
-  const {TYPE, TIMEIN, TIMEOUT, ROOM_NUMBER} = FieldNodes;
+const removeEventListeners = () => {
+  const {TYPE, TIMEIN, TIMEOUT, ROOM_NUMBER, PHOTO_AVATAR, PHOTO_HOUSE} = FieldNodes;
 
   TYPE.removeEventListener('change', fieldTypeChangeHandler);
   TIMEIN.removeEventListener('change', fieldTimeinChangeHandler);
@@ -120,22 +200,34 @@ const removeEventListeners = function() {
   ROOM_NUMBER.removeEventListener('change', fieldRoomNumberChangeHandler);
   AD_FORM.removeEventListener('submit', submitFormHandler);
   AD_FORM_RESET.removeEventListener('click', resetFormHandler);
+  PHOTO_AVATAR.removeEventListener('change', fieldPhotoAvatarChangeHandler);
+  PHOTO_HOUSE.removeEventListener('change', fieldPhotoHouseChangeHandler);
 };
 
-const disableForms = function() {
+const disableForms = () => {
   disableFormFields(AD_FORM, 'fieldset');
   disableFormFields(MAP_FILTERS, 'select');
+  disableFormFields(MAP_FILTERS, 'fieldset');
   removeEventListeners();
+  MAP_FILTERS.removeEventListener('change', filterChangeHandler);
+  filterChangeHandler = null;
 };
 
-const enableForms = function() {
-  enableFormFields(AD_FORM, 'fieldset');
+const enableForms = (setSelect, setCheckbox) => {
+  filterChangeHandler = getFilterChangeHandle(setSelect, setCheckbox);
+  MAP_FILTERS.addEventListener('change', filterChangeHandler);
   enableFormFields(MAP_FILTERS, 'select');
+  enableFormFields(MAP_FILTERS, 'fieldset');
   addEventListeners();
 };
 
-const setAddress = function({lat, lng}) {
+const enableAdFiltersForms = () => {
+  addEventListeners();
+  enableFormFields(AD_FORM, 'fieldset');
+};
+
+const setAddress = ({lat, lng}) => {
   FieldNodes.ADDRESS.value = `${getRoundNumber(lat)}, ${getRoundNumber(lng)}`;
 };
 
-export {disableForms, setAddress, enableForms}
+export {disableForms, setAddress, enableForms, enableAdFiltersForms}

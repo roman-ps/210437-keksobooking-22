@@ -1026,3 +1026,20 @@ fieldset {
 .hidden {
   display: none;
 }
+
+.alert {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  padding: 10px 3px;
+
+  z-index: 100;
+
+  font-size: 22px;
+  text-align: center;
+
+  background-color: red;
+}
