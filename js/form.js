@@ -93,7 +93,7 @@ const fieldPhotoHouseChangeHandler = (evt) => {
   }
 };
 
-const fieldRoomNumberChangeHandler = function(evt) {
+const fieldRoomNumberChangeHandler = (evt) => {
   let value = evt.target.value;
   let options = FieldNodes.CAPACITY.querySelectorAll('option');
   options.forEach(function (elem) {
@@ -104,46 +104,46 @@ const fieldRoomNumberChangeHandler = function(evt) {
   })
 };
 
-const changeAttribute = function(elem, attr1, attr2) {
+const changeAttribute = (elem, attr1, attr2) => {
   elem.removeAttribute(attr1);
   elem.setAttribute(attr2, '');
 };
 
-const disableFormFields = function(node, childFields, classNode = 'ad-form--disabled') {
+const disableFormFields = (node, childFields, classNode = 'ad-form--disabled') => {
   node.classList.add(classNode);
   let children = node.querySelectorAll(childFields);
   children.forEach((elem) => elem.setAttribute('disabled', ''));
 };
 
-const enableFormFields = function(node, childFields, classNode = 'ad-form--disabled') {
+const enableFormFields = (node, childFields, classNode = 'ad-form--disabled') => {
   node.classList.remove(classNode);
   let children = node.querySelectorAll(childFields);
   children.forEach((elem) => elem.removeAttribute('disabled'));
 };
 
-const fieldTypeChangeHandler = function(evt) {
+const fieldTypeChangeHandler = (evt) => {
   let value = evt.target.value;
   FieldNodes.PRICE.setAttribute('placeholder', HOUSE_PRICE[value]);
   FieldNodes.PRICE.setAttribute('min', HOUSE_PRICE[value]);
 };
 
-const fieldTimeinChangeHandler = function(evt) {
+const fieldTimeinChangeHandler = (evt) => {
   let currentValue = evt.target.value;
   FieldNodes.TIMEOUT.value = currentValue;
 };
 
-const fieldTimeoutChangeHandler = function(evt) {
+const fieldTimeoutChangeHandler = (evt) => {
   let currentValue = evt.target.value;
   FieldNodes.TIMEIN.value = currentValue;
 };
 
-const resetFormHandler = function(evt) {
+const resetFormHandler = (evt) => {
   evt.preventDefault();
   AD_FORM.reset();
   setAddress(DEFAULT_COORD);
 };
 
-const submitFormHandler = function(evt) {
+const submitFormHandler = (evt) => {
   evt.preventDefault();
 
   const formData = new FormData(evt.target);
@@ -173,7 +173,7 @@ const getFilterChangeHandle = (setSelect, setCheckbox) => (evt) => {
 
 let filterChangeHandler;
 
-const addEventListeners = function() {
+const addEventListeners = () => {
   const {TYPE, TIMEIN, TIMEOUT, ROOM_NUMBER, PHOTO_AVATAR, PHOTO_HOUSE} = FieldNodes;
 
   TYPE.addEventListener('change', fieldTypeChangeHandler);
@@ -186,7 +186,7 @@ const addEventListeners = function() {
   PHOTO_HOUSE.addEventListener('change', fieldPhotoHouseChangeHandler);
 };
 
-const removeEventListeners = function() {
+const removeEventListeners = () => {
   const {TYPE, TIMEIN, TIMEOUT, ROOM_NUMBER, PHOTO_AVATAR, PHOTO_HOUSE} = FieldNodes;
 
   TYPE.removeEventListener('change', fieldTypeChangeHandler);
@@ -199,7 +199,7 @@ const removeEventListeners = function() {
   PHOTO_HOUSE.removeEventListener('change', fieldPhotoHouseChangeHandler);
 };
 
-const disableForms = function() {
+const disableForms = () => {
   disableFormFields(AD_FORM, 'fieldset');
   disableFormFields(MAP_FILTERS, 'select');
   disableFormFields(MAP_FILTERS, 'fieldset');
@@ -208,7 +208,7 @@ const disableForms = function() {
   filterChangeHandler = null;
 };
 
-const enableForms = function(setSelect, setCheckbox) {
+const enableForms = (setSelect, setCheckbox) => {
   filterChangeHandler = getFilterChangeHandle(setSelect, setCheckbox);
   MAP_FILTERS.addEventListener('change', filterChangeHandler);
   enableFormFields(AD_FORM, 'fieldset');
@@ -217,7 +217,7 @@ const enableForms = function(setSelect, setCheckbox) {
   addEventListeners();
 };
 
-const setAddress = function({lat, lng}) {
+const setAddress = ({lat, lng}) => {
   FieldNodes.ADDRESS.value = `${getRoundNumber(lat)}, ${getRoundNumber(lng)}`;
 };
 

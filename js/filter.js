@@ -14,7 +14,7 @@ const SelectKeys = {
   PRICE: 'housing-price',
   ROOMS: 'housing-rooms',
   GUESTS: 'housing-guests',
-}
+};
 
 const DEFAULT_VALUES = {
   [SelectKeys.TYPE]: '',
@@ -33,7 +33,7 @@ const TYPE_PRICE = {
   'budget': 'low',
   'average': 'middle',
   'rich': 'high',
-}
+};
 
 const checkPrice = (type, price) => {
   switch (type) {

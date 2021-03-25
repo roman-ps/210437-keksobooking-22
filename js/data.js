@@ -74,13 +74,13 @@ const OFFERS_COUNT = 10;
 const DIGITS_COUNT = 2;
 const AVATARS_MAX_INDEX = 8;
 
-const fillAvatarImgUrl = function(number) {
+const fillAvatarImgUrl = (number) => {
   const id = `${number}`.padStart(2, '0');
 
   return `img/avatars/user${id}.png`;
 }
 
-const fillAvatars = function(maxIndex) {
+const fillAvatars = (maxIndex) => {
   let avatars = [];
 
   for (let i = 1; i <= maxIndex; i++) {
@@ -92,7 +92,7 @@ const fillAvatars = function(maxIndex) {
 
 const AVATARS = fillAvatars(AVATARS_MAX_INDEX);
 
-const createAd = function() {
+const createAd = () => {
   const coordY = getRandomNumber(Coords.MIN_Y, Coords.MAX_Y, DIGITS_COUNT);
   const coordX = getRandomNumber(Coords.MIN_X, Coords.MAX_X, DIGITS_COUNT);
   const checks = getRandomElement(CHECKINS);
@@ -121,7 +121,7 @@ const createAd = function() {
   };
 };
 
-const getAdsData = function(offersCount) {
+const getAdsData = (offersCount) => {
   const ads = [];
 
   for (let i = 0; i < offersCount; i++) {
