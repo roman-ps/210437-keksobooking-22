@@ -25,7 +25,7 @@ const FieldNodes = {
   PHOTO_HOUSE: AD_FORM.querySelector('#images'),
 };
 
-const DEFAULT_PRICE_PLACEHOLDER = 1000;
+const DEFAULT_PRICE_PLACEHOLDER = '1000';
 
 const FILE_TYPES = [
   'gif',
@@ -130,13 +130,11 @@ const fieldTypeChangeHandler = (evt) => {
 };
 
 const fieldTimeinChangeHandler = (evt) => {
-  let currentValue = evt.target.value;
-  FieldNodes.TIMEOUT.value = currentValue;
+  FieldNodes.TIMEOUT.value = evt.target.value;
 };
 
 const fieldTimeoutChangeHandler = (evt) => {
-  let currentValue = evt.target.value;
-  FieldNodes.TIMEIN.value = currentValue;
+  FieldNodes.TIMEIN.value = evt.target.value;
 };
 
 const resetFormHandler = (evt) => {

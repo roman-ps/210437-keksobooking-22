@@ -8,6 +8,7 @@ import {setFieldValue, setCheckboxValue, checkData} from './filter.js';
 /* global _:readonly */
 
 const RENDER_TIMEOUT = 500;
+const ALERT_TIMEOUT = 3000;
 
 const adaptPoints = (ad) => ({
   title: ad.offer.title,
@@ -44,7 +45,7 @@ const handleDataError = () => {
   alertContainer.textContent = message;
   document.body.append(alertContainer);
 
-  setTimeout(alertContainer.remove, 3000);
+  setTimeout(alertContainer.remove, ALERT_TIMEOUT);
 };
 
 const handleMapLoaded = () => {
